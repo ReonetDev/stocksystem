@@ -140,7 +140,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ needs.build-macos.outputs.version }}
-          draft: true # Create as draft first
+          draft: false # Create as public release
           prerelease: false
           generate_release_notes: true
         env:
@@ -155,7 +155,7 @@ jobs:
             release-artifacts/macos/*.zip
             release-artifacts/macos/latest-mac.yml
           tag_name: v${{ needs.build-macos.outputs.version }}
-          draft: true # Keep as draft
+          draft: false # Publish immediately
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
