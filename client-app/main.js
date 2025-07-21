@@ -2,8 +2,8 @@ const { app, BrowserWindow, Menu, nativeTheme, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { spawn } = require('child_process');
 const path = require('path');
-const axios = require('axios');
 const Database = require('better-sqlite3');
+const axios = require('axios'); // Added axios import
 
 app.setName('Reonet Stock');
 
@@ -12,12 +12,6 @@ let db;
 let apiProcess = null;
 
 async function startApi() {
-
-    // Check if API is already running
-    if (await isApiRunning()) {
-        console.log('API is already running');
-        return;
-    }
 
     const isDev = process.env.NODE_ENV === 'development';
     let apiPath;
@@ -35,19 +29,17 @@ async function startApi() {
     if (process.platform === 'win32') {
         executablePath = isDev
             ? path.join(apiPath, 'bin', 'Debug', 'net8.0', 'StockControlSystem.API.exe')
-            : path.join(apiPath, 'StockControlSystem.API.exe');
+            : path.join(apiPath, 'win-x64', 'StockControlSystem.API.exe'); // Original path for packaged Windows
     } else if (process.platform === 'darwin') {
         if (process.arch === 'arm64') {
             executablePath = isDev
                 ? path.join(apiPath, 'bin', 'Debug', 'net8.0', 'StockControlSystem.API')
-                : path.join(apiPath, 'StockControlSystem.API');
+                : path.join(apiPath, 'osx-arm64', 'StockControlSystem.API'); // Original path for packaged macOS
         }
     } else {
         console.error('Unsupported platform for API');
         return;
     }
-
-    console.log(`Attempting to start API from: ${executablePath}`);
 
     // Make sure the executable has proper permissions on macOS/Linux
     if (process.platform !== 'win32') {
@@ -63,7 +55,7 @@ async function startApi() {
     apiProcess = spawn(executablePath, [], {
         detached: false,
         stdio: 'pipe',
-        cwd: apiPath, // Set the working directory for the API
+        cwd: path.dirname(executablePath), // Set the working directory to the executable's directory
         env: { ...process.env, 'ASPNETCORE_ENVIRONMENT': isDev ? 'Development' : 'Production' } // Set environment
     });
 
@@ -79,28 +71,23 @@ async function startApi() {
         console.log(`API process exited with code ${code}`);
     });
 
-    apiProcess.on('error', (error) => {
-    console.error('Failed to start API:', error);
-    })
-
     // Wait for API to be ready
     await waitForApi();
 }
 
 async function isApiRunning() {
   try {
-    await axios.get(`http://localhost:5260/health`); // Implement a health endpoint
+    await axios.get(`http://localhost:5260/health`); // Corrected health endpoint
     return true;
   } catch {
     return false;
   }
 }
 
-async function waitForApi(timeout = 60000) {
+async function waitForApi(timeout = 60000) { // Increased timeout
   const start = Date.now();
   while (Date.now() - start < timeout) {
     if (await isApiRunning()) {
-      console.log('API is ready');
       return;
     }
     await new Promise(resolve => setTimeout(resolve, 1000));
@@ -186,7 +173,6 @@ const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
 app.whenReady().then(async () => {
-    console.log('Electron app is ready. Initializing...');
     initializeDatabase();
     try {
         await startApi();
@@ -213,7 +199,7 @@ app.on('activate', () => {
     }
 });
 
-ipcMain.on('check-for-updates', () => {
+icpMain.on('check-for-updates', () => {
     autoUpdater.checkForUpdatesAndNotify();
 });
 
@@ -265,7 +251,7 @@ ipcMain.handle('load-credentials', () => {
     }
 });
 
-ipcMain.on('save-credentials', (event, { email, password }) => {
+icpMain.on('save-credentials', (event, { email, password }) => {
     try {
         db.prepare('DELETE FROM credentials').run(); // Clear existing
         db.prepare('INSERT INTO credentials (email, password) VALUES (?, ?)').run(email, password);
@@ -274,7 +260,7 @@ ipcMain.on('save-credentials', (event, { email, password }) => {
     }
 });
 
-ipcMain.on('clear-credentials', () => {
+icpMain.on('clear-credentials', () => {
     try {
         db.prepare('DELETE FROM credentials').run();
     } catch (error) {
@@ -282,6 +268,6 @@ ipcMain.on('clear-credentials', () => {
     }
 });
 
-ipcMain.handle('get-app-version', () => {
+icpMain.handle('get-app-version', () => {
     return app.getVersion();
 });
