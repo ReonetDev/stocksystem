@@ -199,7 +199,7 @@ app.on('activate', () => {
     }
 });
 
-icpMain.on('check-for-updates', () => {
+ipcMain.on('check-for-updates', () => {
     autoUpdater.checkForUpdatesAndNotify();
 });
 
@@ -251,7 +251,7 @@ ipcMain.handle('load-credentials', () => {
     }
 });
 
-icpMain.on('save-credentials', (event, { email, password }) => {
+ipcMain.on('save-credentials', (event, { email, password }) => {
     try {
         db.prepare('DELETE FROM credentials').run(); // Clear existing
         db.prepare('INSERT INTO credentials (email, password) VALUES (?, ?)').run(email, password);
@@ -260,7 +260,7 @@ icpMain.on('save-credentials', (event, { email, password }) => {
     }
 });
 
-icpMain.on('clear-credentials', () => {
+ipcMain.on('clear-credentials', () => {
     try {
         db.prepare('DELETE FROM credentials').run();
     } catch (error) {
@@ -268,6 +268,6 @@ icpMain.on('clear-credentials', () => {
     }
 });
 
-icpMain.handle('get-app-version', () => {
+ipcMain.handle('get-app-version', () => {
     return app.getVersion();
 });
