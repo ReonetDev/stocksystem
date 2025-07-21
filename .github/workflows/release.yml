@@ -1,0 +1,69 @@
+name: Release New Version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest # Use a neutral build environment
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x' # Match your .NET version
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Match your Node.js version
+
+      - name: Create Production AppSettings
+        run: echo "${{ secrets.PRODUCTION_APPSETTINGS }}" > ./StockControlSystem.API/appsettings.json
+
+      # --- Build the .NET API ---
+      - name: Publish API for Windows
+        run: dotnet publish ./StockControlSystem.API -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/win-x64
+
+      - name: Publish API for macOS
+        run: dotnet publish ./StockControlSystem.API -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=true -o ./publish/osx-arm64
+
+      # --- Prepare the Client App ---
+      - name: Create API directory in client-app
+        run: mkdir -p ./client-app/api
+
+      - name: Copy Windows API to client-app
+        run: cp -r ./publish/win-x64/ ./client-app/api/
+
+      - name: Copy macOS API to client-app
+        run: cp -r ./publish/osx-arm64/ ./client-app/api/
+
+      # --- Build and Package the Electron App ---
+      - name: Install client-app dependencies
+        run: npm install
+        working-directory: ./client-app
+
+      - name: Package Electron app
+        run: npm run package
+        working-directory: ./client-app
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # --- Create the GitHub Release ---
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            client-app/release/*.dmg
+            client-app/release/*.exe
+            client-app/release/*.zip
+            client-app/release/*.blockmap
+            client-app/release/latest.yml
+            client-app/release/latest-mac.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
