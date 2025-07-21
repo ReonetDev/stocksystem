@@ -25,8 +25,9 @@ jobs:
 
       - name: Install Wine (for Windows build on Linux)
         run: |
+          sudo dpkg --add-architecture i386
           sudo apt-get update
-          sudo apt-get install -y wine
+          sudo apt-get install -y wine32
 
       - name: Create Production AppSettings
         env:
