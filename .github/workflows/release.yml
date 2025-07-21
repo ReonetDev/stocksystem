@@ -48,10 +48,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Windows Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: windows-build
-          path: client-app/release/*.exe
+          path: client-app/release/
 
   build-macos:
     runs-on: macos-latest
@@ -95,13 +95,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload macOS Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macos-build
-          path: |
-            client-app/release/*.dmg
-            client-app/release/*.zip
-            client-app/release/latest-mac.yml
+          path: client-app/release/
 
   create-release:
     runs-on: ubuntu-latest
@@ -109,24 +106,24 @@ jobs:
 
     steps:
       - name: Download Windows Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: windows-build
-          path: release-artifacts
+          path: release-artifacts/windows
 
       - name: Download macOS Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: macos-build
-          path: release-artifacts
+          path: release-artifacts/macos
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            release-artifacts/*.dmg
-            release-artifacts/*.exe
-            release-artifacts/*.zip
-            release-artifacts/latest-mac.yml
+            release-artifacts/windows/*.exe
+            release-artifacts/macos/*.dmg
+            release-artifacts/macos/*.zip
+            release-artifacts/macos/latest-mac.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
