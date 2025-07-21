@@ -138,27 +138,17 @@ jobs:
           name: macos-build
           path: release-artifacts/macos
 
-      - name: Create Git Tag
-        id: create_tag
+      - name: Create and Upload Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ needs.build-macos.outputs.version }}
-          draft: false # Create as public release
+          draft: false
           prerelease: false
           generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Release Assets
-        uses: softprops/action-gh-release@v1
-        with:
           files: |
             release-artifacts/windows/*.exe
             release-artifacts/macos/*.dmg
             release-artifacts/macos/*.zip
             release-artifacts/macos/latest-mac.yml
-          tag_name: v${{ needs.build-macos.outputs.version }}
-          draft: false # Publish immediately
-          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
