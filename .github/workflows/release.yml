@@ -61,6 +61,8 @@ jobs:
 
   build-macos:
     runs-on: macos-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
 
     steps:
       - name: Checkout code
@@ -100,6 +102,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get App Version
+        id: get_version
+        run: echo "version=$(node -p \"require('./client-app/package.json').version\")" >> $GITHUB_OUTPUT
+
       - name: Upload macOS Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -123,7 +129,18 @@ jobs:
           name: macos-build
           path: release-artifacts/macos
 
-      - name: Create Release
+      - name: Create Git Tag
+        id: create_tag
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.build-macos.outputs.version }}
+          draft: true # Create as draft first
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Assets
         uses: softprops/action-gh-release@v1
         with:
           files: |
@@ -131,5 +148,8 @@ jobs:
             release-artifacts/macos/*.dmg
             release-artifacts/macos/*.zip
             release-artifacts/macos/latest-mac.yml
+          tag_name: v${{ needs.build-macos.outputs.version }}
+          draft: true # Keep as draft
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
