@@ -43,7 +43,7 @@ jobs:
         run: mkdir -p ./client-app/api
 
       - name: Copy Windows API to client-app
-        run: cp -r ./publish/win-x64/ ./client-app/api/
+        run: cp -r ./publish/win-x64/. ./client-app/api/
 
       - name: Install client-app dependencies
         run: npm install
@@ -94,7 +94,7 @@ jobs:
         run: mkdir -p ./client-app/api
 
       - name: Copy macOS API to client-app
-        run: cp -r ./publish/osx-arm64/ ./client-app/api/
+        run: cp -r ./publish/osx-arm64/. ./client-app/api/
 
       - name: Install client-app dependencies
         run: npm install
