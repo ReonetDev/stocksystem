@@ -24,7 +24,9 @@ jobs:
           node-version: '20' # Match your Node.js version
 
       - name: Create Production AppSettings
-        run: echo "${{ secrets.PRODUCTION_APPSETTINGS }}" > ./StockControlSystem.API/appsettings.json
+        env:
+          APPSETTINGS_JSON: ${{ secrets.PRODUCTION_APPSETTINGS }}
+        run: echo "$APPSETTINGS_JSON" > ./StockControlSystem.API/appsettings.json
 
       # --- Build the .NET API ---
       - name: Publish API for Windows
