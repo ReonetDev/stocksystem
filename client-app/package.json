@@ -38,16 +38,16 @@
       "target": ["nsis:x64"],
       "extraResources": [
         {
-          "from": "api-temp/win-x64/",
-          "to": "api/"
+          "from": "api/win-x64/",
+          "to": "api/win-x64/"
         }
       ]
     },
     "mac": {
       "extraResources": [
         {
-          "from": "api-temp/osx-arm64/",
-          "to": "api/"
+          "from": "api/osx-arm64/",
+          "to": "api/osx-arm64/"
         }
       ]
     }
