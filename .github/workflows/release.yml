@@ -42,7 +42,7 @@ jobs:
         working-directory: ./client-app
 
       - name: Package Electron app for Windows
-        run: electron-builder --win
+        run: npx electron-builder --win
         working-directory: ./client-app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -89,7 +89,7 @@ jobs:
         working-directory: ./client-app
 
       - name: Package Electron app for macOS
-        run: electron-builder --mac
+        run: npx electron-builder --mac
         working-directory: ./client-app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
