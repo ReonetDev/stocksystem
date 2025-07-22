@@ -55,6 +55,7 @@ jobs:
 
       - name: Get App Version
         id: get_version
+        shell: bash
         run: |
           VERSION=$(node -p "require('./client-app/package.json').version")
           echo "Extracted version: $VERSION"
