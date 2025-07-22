@@ -172,6 +172,7 @@ function createWindow() {
     } else {
         // In production, load the built React app
         win.loadFile(path.join(__dirname, 'dist/index.html'));
+        win.webContents.openDevTools(); // Open DevTools for debugging
     }
 
     // Send theme to renderer
