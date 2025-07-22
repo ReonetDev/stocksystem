@@ -50,6 +50,14 @@ jobs:
         run: npm install
         working-directory: ./client-app
 
+      - name: Build client-app
+        run: npm run build
+        working-directory: ./client-app
+
+      - name: List client-app dist directory
+        run: ls -R ./client-app/dist
+        working-directory: ./client-app
+
       - name: Package Electron app for Windows
         run: npx electron-builder --win --x64
         working-directory: ./client-app
