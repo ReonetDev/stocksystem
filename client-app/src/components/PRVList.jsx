@@ -57,7 +57,7 @@ const PRVList = () => {
                 <Spinner animation="border" />
             ) : (
                 <div style={{ maxHeight: '800px', overflowY: 'auto' }}>
-                    <Table striped bordered hover responsive>
+                    <Table striped bordered hover responsive className="prv-table-sm">
                         <thead>
                             <tr>
                                 <th>Actions</th>

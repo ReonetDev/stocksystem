@@ -40,3 +40,8 @@
 .read-the-docs {
   color: #888;
 }
+
+.prv-table-sm th,
+.prv-table-sm td {
+  font-size: 0.75rem; /* Adjust as needed */
+}
