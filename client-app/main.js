@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu, nativeTheme, ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 const Database = require('better-sqlite3');
 const axios = require('axios'); // Added axios import
 
@@ -11,68 +12,104 @@ let win;
 let db;
 let apiProcess = null;
 
-async function startApi() {
+// --- File Logging Setup ---
+const logPath = path.join(app.getPath('userData'), 'api-launch.log');
 
+function logToFile(message) {
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(logPath, `[${timestamp}] ${message}\n`);
+}
+
+// Clear log file on startup
+try {
+    fs.writeFileSync(logPath, '');
+} catch (err) {
+    console.error("Failed to clear log file:", err);
+}
+
+logToFile('--- Application Starting ---');
+// --- End File Logging Setup ---
+
+async function startApi() {
+    logToFile('Attempting to start API...');
     const isDev = process.env.NODE_ENV === 'development';
     let apiPath;
 
     if (isDev) {
+        logToFile('Running in Development mode.');
         // In development, the API is at the root of the client-app's parent directory
         apiPath = path.join(__dirname, '..', 'StockControlSystem.API');
     } else {
+        logToFile('Running in Production mode.');
         // In production, the API is bundled with the app
         apiPath = path.join(process.resourcesPath, 'api');
     }
+    logToFile(`API base path set to: ${apiPath}`);
 
     let executablePath;
 
     if (process.platform === 'win32') {
+        logToFile('Platform is Windows.');
         executablePath = isDev
             ? path.join(apiPath, 'bin', 'Debug', 'net8.0', 'StockControlSystem.API.exe')
-            : path.join(apiPath, 'win-x64', 'StockControlSystem.API.exe'); // Original path for packaged Windows
+            : path.join(apiPath, 'win-x64', 'StockControlSystem.API.exe');
     } else if (process.platform === 'darwin') {
+        logToFile('Platform is macOS.');
         if (process.arch === 'arm64') {
+            logToFile('Architecture is arm64.');
             executablePath = isDev
                 ? path.join(apiPath, 'bin', 'Debug', 'net8.0', 'StockControlSystem.API')
-                : path.join(apiPath, 'osx-arm64', 'StockControlSystem.API'); // Original path for packaged macOS
+                : path.join(apiPath, 'osx-arm64', 'StockControlSystem.API');
         }
     } else {
-        console.error('Unsupported platform for API');
+        logToFile(`Unsupported platform: ${process.platform}`);
         return;
     }
+    logToFile(`API executable path determined to be: ${executablePath}`);
 
-    // Make sure the executable has proper permissions on macOS/Linux
-    if (process.platform !== 'win32') {
-        const fs = require('fs');
-        try {
-            fs.chmodSync(executablePath, '755');
-        } catch (error) {
-            console.error(`Failed to set permissions for API: ${error.message}`);
-            return; // Stop if we can't set permissions
+    try {
+        logToFile('Checking if executable exists...');
+        if (!fs.existsSync(executablePath)) {
+            logToFile(`Error: API executable not found at path: ${executablePath}`);
+            return;
         }
+        logToFile('Executable found.');
+
+        // Make sure the executable has proper permissions on macOS/Linux
+        if (process.platform !== 'win32') {
+            logToFile('Setting executable permissions for macOS/Linux...');
+            fs.chmodSync(executablePath, '755');
+            logToFile('Permissions set to 755.');
+        }
+
+        logToFile('Spawning API process...');
+        apiProcess = spawn(executablePath, [], {
+            detached: false,
+            stdio: 'pipe',
+            cwd: path.dirname(executablePath),
+            env: { ...process.env, 'ASPNETCORE_ENVIRONMENT': isDev ? 'Development' : 'Production' }
+        });
+
+        apiProcess.stdout.on('data', (data) => {
+            logToFile(`API stdout: ${data.toString()}`);
+        });
+
+        apiProcess.stderr.on('data', (data) => {
+            logToFile(`API stderr: ${data.toString()}`);
+        });
+
+        apiProcess.on('close', (code) => {
+            logToFile(`API process exited with code ${code}`);
+        });
+        
+        logToFile('API process spawned. Waiting for it to be ready...');
+        await waitForApi();
+        logToFile('API is ready.');
+
+    } catch (error) {
+        logToFile(`Error during API startup: ${error.message}`);
+        logToFile(`Stack trace: ${error.stack}`);
     }
-
-    apiProcess = spawn(executablePath, [], {
-        detached: false,
-        stdio: 'pipe',
-        cwd: path.dirname(executablePath), // Set the working directory to the executable's directory
-        env: { ...process.env, 'ASPNETCORE_ENVIRONMENT': isDev ? 'Development' : 'Production' } // Set environment
-    });
-
-    apiProcess.stdout.on('data', (data) => {
-        console.log(`API stdout: ${data}`);
-    });
-
-    apiProcess.stderr.on('data', (data) => {
-        console.error(`API stderr: ${data}`);
-    });
-
-    apiProcess.on('close', (code) => {
-        console.log(`API process exited with code ${code}`);
-    });
-
-    // Wait for API to be ready
-    await waitForApi();
 }
 
 async function isApiRunning() {
