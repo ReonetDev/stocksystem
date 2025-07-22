@@ -8,6 +8,8 @@ on:
 jobs:
   build-windows:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
     permissions:
       contents: write
 
@@ -50,58 +52,7 @@ jobs:
         working-directory: ./client-app
 
       - name: Package Electron app for Windows
-        run: npx electron-builder --win
-        working-directory: ./client-app
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload Windows Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-build
-          path: client-app/release/
-
-  build-macos:
-    runs-on: macos-latest
-    outputs:
-      version: ${{ steps.get_version.outputs.version }}
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.x'
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Create Production AppSettings
-        env:
-          APPSETTINGS_JSON: ${{ secrets.PRODUCTION_APPSETTINGS }}
-        run: echo "$APPSETTINGS_JSON" > ./StockControlSystem.API/appsettings.json
-
-      - name: Publish API for macOS
-        run: dotnet publish ./StockControlSystem.API -c Release -r osx-arm64 --self-contained true -p:PublishSingleFile=true -o ./publish/osx-arm64
-
-      - name: Create API directory in client-app
-        run: mkdir -p ./client-app/api/osx-arm64
-
-      - name: Copy macOS API to client-app
-        run: cp -r ./publish/osx-arm64/. ./client-app/api/osx-arm64/
-
-      - name: Install client-app dependencies
-        run: npm install
-        working-directory: ./client-app
-
-      - name: Package Electron app for macOS
-        run: npx electron-builder --mac
+        run: npx electron-builder --win --x64
         working-directory: ./client-app
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -113,15 +64,15 @@ jobs:
           echo "Extracted version: $VERSION"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Upload macOS Artifacts
+      - name: Upload Windows Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: macos-build
+          name: windows-build
           path: client-app/release/
 
   create-release:
     runs-on: ubuntu-latest
-    needs: [build-windows, build-macos]
+    needs: [build-windows]
     permissions:
       contents: write
 
@@ -132,23 +83,14 @@ jobs:
           name: windows-build
           path: release-artifacts/windows
 
-      - name: Download macOS Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: macos-build
-          path: release-artifacts/macos
-
       - name: Create and Upload Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ needs.build-macos.outputs.version }}
+          tag_name: v${{ needs.build-windows.outputs.version }}
           draft: false
           prerelease: false
           generate_release_notes: true
           files: |
             release-artifacts/windows/*.exe
-            release-artifacts/macos/*.dmg
-            release-artifacts/macos/*.zip
-            release-artifacts/macos/latest-mac.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
