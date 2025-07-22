@@ -210,14 +210,29 @@ const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
 app.whenReady().then(async () => {
-    initializeDatabase();
+    logToFile('app.whenReady() event fired.');
     try {
-        await startApi();
+        logToFile('Initializing database...');
+        initializeDatabase();
+        logToFile('Database initialized successfully.');
     } catch (error) {
-        console.error(`Failed to start API: ${error.message}`);
-        // The app will continue to run, but API-dependent features will not work.
+        logToFile(`FATAL: Failed to initialize database: ${error.message}`);
+        logToFile(`Stack trace: ${error.stack}`);
+        // App will likely be unusable, but we continue to see if window opens
     }
+
+    try {
+        logToFile('Starting API...');
+        await startApi();
+        logToFile('API start process completed.');
+    } catch (error) {
+        logToFile(`FATAL: Failed to start API: ${error.message}`);
+        logToFile(`Stack trace: ${error.stack}`);
+    }
+    
+    logToFile('Creating browser window...');
     createWindow();
+    logToFile('Browser window created.');
 });
 
 app.on('before-quit', () => {
