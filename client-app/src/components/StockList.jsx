@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Spinner, Table, Button, Form, Row, Col, Container } from 'react-bootstrap';

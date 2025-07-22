@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Stack, Spinner } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import axios from '../axiosConfig';
 
 const Profile = () => {
     const [userData, setUserData] = useState({

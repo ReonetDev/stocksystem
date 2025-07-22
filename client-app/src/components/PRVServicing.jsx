@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 import { Container, Row, Col, Table, Form, Spinner, Button, Tabs, Tab } from 'react-bootstrap';
 

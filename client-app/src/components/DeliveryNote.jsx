@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Table, Spinner, Button } from 'react-bootstrap';
 import { FaArrowLeft, FaPrint } from 'react-icons/fa';

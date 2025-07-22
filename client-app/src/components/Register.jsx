@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Stack, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 
 const Register = () => {

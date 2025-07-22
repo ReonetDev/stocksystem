@@ -3,7 +3,7 @@ import { Container, Form, Row, Col, Spinner, Card } from 'react-bootstrap';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 
 // Fix for default marker icon issue with Webpack

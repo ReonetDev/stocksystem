@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Form, Button, Container, Row, Col, Stack, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../axiosConfig';
 import logo from '../assets/reoicon.png'; // Using reoicon.png as per request
 import { toast } from 'react-toastify';
 

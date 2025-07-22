@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/reoicon.png'; // Import the logo image
 import { FaUserCircle } from 'react-icons/fa'; // Import the user icon
 import { toast } from 'react-toastify';
-import axios from 'axios';
+import axios from '../axiosConfig';
 
 const NavigationBar = () => {
     const [theme, setTheme] = useState('light');
