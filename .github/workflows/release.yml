@@ -30,6 +30,7 @@ jobs:
       
 
       - name: Create Production AppSettings
+        shell: bash
         env:
           APPSETTINGS_JSON: ${{ secrets.PRODUCTION_APPSETTINGS }}
         run: echo "$APPSETTINGS_JSON" > ./StockControlSystem.API/appsettings.json
@@ -38,9 +39,11 @@ jobs:
         run: dotnet publish ./StockControlSystem.API -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o ./publish/win-x64
 
       - name: Create API directory in client-app
+        shell: bash
         run: mkdir -p ./client-app/api/win-x64
 
       - name: Copy Windows API to client-app
+        shell: bash
         run: cp -r ./publish/win-x64/. ./client-app/api/win-x64/
 
       - name: Install client-app dependencies
