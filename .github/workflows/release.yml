@@ -55,6 +55,7 @@ jobs:
         working-directory: ./client-app
 
       - name: List client-app dist directory
+        shell: bash
         run: ls -R ./client-app/dist
         working-directory: ./client-app
 
