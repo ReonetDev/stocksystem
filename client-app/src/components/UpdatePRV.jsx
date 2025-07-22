@@ -10,6 +10,7 @@ const UpdatePRV = () => {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(false);
     const [siteName, setSiteName] = useState('');
+    const [technicians, setTechnicians] = useState([]);
 
     const prvStatuses = ["Open", "Closed"];
     const prvMakes = ["Bermad", "Cla-Val", "Singer", "Dura-Flo", "Braukmann", "JRG", "Clayton", "Honeywell"];
@@ -38,8 +39,22 @@ const UpdatePRV = () => {
             }
         };
 
+        const fetchTechnicians = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:5260/api/Technicians', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setTechnicians(response.data.$values);
+            } catch (error) {
+                console.error('Failed to fetch technicians:', error);
+                toast.error('Failed to load technicians for dropdown.');
+            }
+        };
+
         if (id) {
             fetchPRVDevice();
+            fetchTechnicians();
         }
     }, [id, navigate]);
 
@@ -112,7 +127,12 @@ const UpdatePRV = () => {
                         <Col lg={4} md={6} sm={12}>
                             <Form.Group controlId="technician">
                                 <Form.Label>Technician</Form.Label>
-                                <Form.Control name="technician" placeholder="Technician" value={formData.technician || ''} onChange={handleChange} />
+                                <Form.Select name="technician" value={formData.technician || ''} onChange={handleChange}>
+                                    <option value="">Select Technician</option>
+                                    {technicians.map((tech) => (
+                                        <option key={tech.id} value={tech.name}>{tech.name}</option>
+                                    ))}
+                                </Form.Select>
                             </Form.Group>
                         </Col>
                     </Row>
