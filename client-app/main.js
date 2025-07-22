@@ -14,50 +14,27 @@ let db;
 let apiProcess = null;
 
 // --- File Logging Setup ---
-const logPath = path.join(app.getPath('userData'), 'api-launch.log');
-
-function logToFile(message) {
-    const timestamp = new Date().toISOString();
-    fs.appendFileSync(logPath, `[${timestamp}] ${message}\n`);
-}
-
-// Clear log file on startup
-try {
-    fs.writeFileSync(logPath, '');
-} catch (err) {
-    console.error("Failed to clear log file:", err);
-}
-
-logToFile('--- Application Starting ---');
+const logPath = path.join(app.getPath('userData'), 'main-error.log');function logToFile(message) {    const timestamp = new Date().toISOString();    fs.appendFileSync(logPath, `[${timestamp}] ${message}\n`);}// Clear log file on startuptry {    fs.writeFileSync(logPath, '');} catch (err) {    console.error("Failed to clear log file:", err);}// Only log errors to file// logToFile('--- Application Starting ---');
 // --- End File Logging Setup ---
 
 async function startApi() {
-    logToFile('Attempting to start API...');
     const isDev = process.env.NODE_ENV === 'development';
     let apiPath;
 
     if (isDev) {
-        logToFile('Running in Development mode.');
-        // In development, the API is at the root of the client-app's parent directory
         apiPath = path.join(__dirname, '..', 'StockControlSystem.API');
     } else {
-        logToFile('Running in Production mode.');
-        // In production, the API is bundled with the app
         apiPath = path.join(process.resourcesPath, 'api');
     }
-    logToFile(`API base path set to: ${apiPath}`);
 
     let executablePath;
 
     if (process.platform === 'win32') {
-        logToFile('Platform is Windows.');
         executablePath = isDev
             ? path.join(apiPath, 'bin', 'Debug', 'net8.0', 'StockControlSystem.API.exe')
             : path.join(apiPath, 'win-x64', 'StockControlSystem.API.exe');
     } else if (process.platform === 'darwin') {
-        logToFile('Platform is macOS.');
         if (process.arch === 'arm64') {
-            logToFile('Architecture is arm64.');
             executablePath = isDev
                 ? path.join(apiPath, 'bin', 'Debug', 'net8.0', 'StockControlSystem.API')
                 : path.join(apiPath, 'osx-arm64', 'StockControlSystem.API');
@@ -66,24 +43,18 @@ async function startApi() {
         logToFile(`Unsupported platform: ${process.platform}`);
         return;
     }
-    logToFile(`API executable path determined to be: ${executablePath}`);
 
     try {
-        logToFile('Checking if executable exists...');
         if (!fs.existsSync(executablePath)) {
             logToFile(`Error: API executable not found at path: ${executablePath}`);
             return;
         }
-        logToFile('Executable found.');
 
         // Make sure the executable has proper permissions on macOS/Linux
         if (process.platform !== 'win32') {
-            logToFile('Setting executable permissions for macOS/Linux...');
             fs.chmodSync(executablePath, '755');
-            logToFile('Permissions set to 755.');
         }
 
-        logToFile('Spawning API process...');
         apiProcess = spawn(executablePath, [], {
             detached: false,
             stdio: 'pipe',
@@ -92,7 +63,7 @@ async function startApi() {
         });
 
         apiProcess.stdout.on('data', (data) => {
-            logToFile(`API stdout: ${data.toString()}`);
+            // logToFile(`API stdout: ${data.toString()}`); // Keep this if you want API stdout in log
         });
 
         apiProcess.stderr.on('data', (data) => {
@@ -103,9 +74,7 @@ async function startApi() {
             logToFile(`API process exited with code ${code}`);
         });
         
-        logToFile('API process spawned. Waiting for it to be ready...');
         await waitForApi();
-        logToFile('API is ready.');
 
     } catch (error) {
         logToFile(`Error during API startup: ${error.message}`);
@@ -177,7 +146,7 @@ function createWindow() {
             protocol: 'file:',
             slashes: true
         }));
-        win.webContents.openDevTools(); // Open DevTools for debugging
+        // win.webContents.openDevTools(); // Open DevTools for debugging
     }
 
     // Send theme to renderer
@@ -216,29 +185,21 @@ const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
 app.whenReady().then(async () => {
-    logToFile('app.whenReady() event fired.');
     try {
-        logToFile('Initializing database...');
         initializeDatabase();
-        logToFile('Database initialized successfully.');
     } catch (error) {
         logToFile(`FATAL: Failed to initialize database: ${error.message}`);
         logToFile(`Stack trace: ${error.stack}`);
-        // App will likely be unusable, but we continue to see if window opens
     }
 
     try {
-        logToFile('Starting API...');
         await startApi();
-        logToFile('API start process completed.');
     } catch (error) {
         logToFile(`FATAL: Failed to start API: ${error.message}`);
         logToFile(`Stack trace: ${error.stack}`);
     }
     
-    logToFile('Creating browser window...');
     createWindow();
-    logToFile('Browser window created.');
 });
 
 app.on('before-quit', () => {
