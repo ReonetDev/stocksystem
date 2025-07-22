@@ -173,7 +173,7 @@ function createWindow() {
     } else {
         // In production, load the built React app
         win.loadURL(url.format({
-            pathname: path.join(__dirname, 'dist/index.html'),
+            pathname: path.join(app.getAppPath(), 'dist', 'index.html'),
             protocol: 'file:',
             slashes: true
         }));
