@@ -3,6 +3,7 @@ const { autoUpdater } = require('electron-updater');
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
+const url = require('url');
 const Database = require('better-sqlite3');
 const axios = require('axios'); // Added axios import
 
@@ -171,7 +172,11 @@ function createWindow() {
         // win.webContents.openDevTools(); // Disabled by user request
     } else {
         // In production, load the built React app
-        win.loadFile(path.join(__dirname, 'dist/index.html'));
+        win.loadURL(url.format({
+            pathname: path.join(__dirname, 'dist/index.html'),
+            protocol: 'file:',
+            slashes: true
+        }));
         win.webContents.openDevTools(); // Open DevTools for debugging
     }
 
