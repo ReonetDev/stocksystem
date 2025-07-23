@@ -104,8 +104,7 @@ const AllocateSim = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Allocate Sim Card</h2>
-
+            <h4 className="mb-2 text-center">Allocate Sim Card</h4>
             <Row>
                 <Col md={6}>
                     <h3>Select Sim Card</h3>

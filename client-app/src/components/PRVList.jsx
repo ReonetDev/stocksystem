@@ -44,7 +44,7 @@ const PRVList = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">PRV Device List</h2>
+            <h4 className="mb-2 text-center">PRV Device List</h4>
             <Form.Group className="mb-3">
                 <Form.Control
                     type="text"
@@ -56,8 +56,8 @@ const PRVList = () => {
             {loading ? (
                 <Spinner animation="border" />
             ) : (
-                <div style={{ maxHeight: '800px', overflowY: 'auto' }}>
-                    <Table striped bordered hover responsive className="prv-table-sm">
+                <div style={{ maxHeight: '750px', overflowY: 'auto' }}>
+                    <Table striped bordered hover responsive className="prv-table-sm" style={{ fontSize: '0.8rem' }}>
                         <thead>
                             <tr>
                                 <th>Actions</th>

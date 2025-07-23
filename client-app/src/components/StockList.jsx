@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from '../axiosConfig';
 import { Link } from 'react-router-dom';
@@ -67,7 +66,7 @@ const StockList = () => {
 
     return (
         <Container fluid className="py-4 px-4"> {/* Added padding to Container */}
-            <h2>Update Stock</h2>
+            <h4 className="mb-2 text-center">Update Stock</h4>
 
             <Form.Group className="mb-3">
                 <Row className="align-items-center">
@@ -88,7 +87,8 @@ const StockList = () => {
             {filteredStock.length === 0 ? (
                 <p>No stock items found. Add a new one!</p>
             ) : (
-                <Table striped bordered hover responsive>
+                <div style={{ maxHeight: '750px', overflowY: 'auto' }}>
+                    <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }} >
                     <thead>
                         <tr>
                             <th>Supplier</th>
@@ -123,6 +123,7 @@ const StockList = () => {
                         ))}
                     </tbody>
                 </Table>
+                </div> 
             )}
         </Container>
     );

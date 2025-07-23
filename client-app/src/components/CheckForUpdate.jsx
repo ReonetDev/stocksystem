@@ -24,8 +24,8 @@ const CheckForUpdate = () => {
     };
 
     return (
-        <Container className="py-4">
-            <h2 className="mb-4">Check for Updates</h2>
+        <Container fluid className="py-4">
+            <h4 className="mb-2 text-center">Check for Updates</h4>
             <Button onClick={handleCheckForUpdate} className="mb-3">Check for Updates</Button>
             {status && (
                 <Alert variant={status.includes('Error') ? 'danger' : 'info'}>

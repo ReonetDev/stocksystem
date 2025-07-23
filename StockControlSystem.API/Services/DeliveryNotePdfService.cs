@@ -17,9 +17,36 @@ namespace StockControlSystem.API.Services
         public DeliveryNotePdfService(ApplicationDbContext context)
         {
             _context = context;
-            // Determine the path to the assets folder.
-            // This assumes the assets are in client-app/src/assets relative to the solution file.
-            _assetsPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "client-app", "src", "assets");
+            
+            var assemblyLocation = AppContext.BaseDirectory;
+            var dir = new DirectoryInfo(assemblyLocation);
+
+            // Look for the solution file to determine if we are in a development environment
+            while (dir != null && !dir.GetFiles("*.sln").Any())
+            {
+                dir = dir.Parent;
+            }
+
+            if (dir != null) // We are in development
+            {
+                _assetsPath = Path.Combine(dir.FullName, "client-app", "src", "assets");
+            }
+            else // We are in a production environment
+            {
+                // Based on the release.yml, the API executable is inside the packaged application.
+                // The client assets are also packaged. We need to find their relative path.
+                // A common structure is `api` and `dist` folders at the same level.
+                var prodPath = Path.GetFullPath(Path.Combine(assemblyLocation, "..", "..", "dist", "assets"));
+                if (Directory.Exists(prodPath))
+                {
+                    _assetsPath = prodPath;
+                }
+                else
+                {
+                    // If the primary production path is not found, throw an exception to make the issue visible.
+                    throw new DirectoryNotFoundException($"Could not find the assets directory in production. Path checked: {prodPath}");
+                }
+            }
         }
 
         public byte[] GeneratePdf(int deliveryNoteId)
@@ -27,7 +54,7 @@ namespace StockControlSystem.API.Services
             // Retrieve the delivery note with its items and serial stock details
             var deliveryNote = _context.DeliveryNotes
                 .Include(dn => dn.Items)
-                    .ThenInclude(dni => dni.SerialStock)
+                .ThenInclude(dni => dni.SerialStock)
                 .FirstOrDefault(dn => dn.Id == deliveryNoteId);
 
             if (deliveryNote == null)

@@ -84,7 +84,7 @@ const ManageRegions = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Manage Regions</h2>
+            <h4 className="mb-2 text-center">Manage Regions</h4>
             <div className="d-flex justify-content-end mb-3">
                 <Button variant="primary" onClick={handleAddClick}>
                     Add Region
@@ -94,7 +94,7 @@ const ManageRegions = () => {
             {loading ? (
                 <Spinner animation="border" />
             ) : (
-                <Table striped bordered hover responsive>
+                <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                     <thead>
                         <tr>
                             <th>ID</th>

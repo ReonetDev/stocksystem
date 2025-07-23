@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 import { Form, Button, Container, Row, Col, Stack, Spinner, Table } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const NewStock = () => {
+    const navigate = useNavigate();
     const initialFormData = {
         supplier: '',
         serialNumber: '',
@@ -81,7 +83,7 @@ const NewStock = () => {
             toast.success('All stock items added successfully!', { autoClose: 500 });
             setStockItems([]); // Clear the list after successful submission
             // Optionally redirect or stay on page
-            // setTimeout(() => { window.location = '/stock'; }, 2000);
+            navigate('/stock');
         } else {
             toast.error('Some items failed to add. Check console for details.', { autoClose: 1000 });
         }
@@ -93,7 +95,7 @@ const NewStock = () => {
 
     return (
         <Container fluid className="py-4"> {/* Added padding top/bottom */}
-            <h2 className="mb-4">Add New Stock</h2>
+            <h4 className="mb-2 text-center">Add New Stock</h4>
             <Form className="mb-4">
                 <Row className="mb-3">
                     <Col lg={3} md={6} sm={12}>
@@ -157,10 +159,12 @@ const NewStock = () => {
                                 <option value="Installed">Installed</option>
                                 <option value="BER">BER</option>
                                 <option value="Repairs">Repairs</option>
+                                <option value="Stolen">Stolen</option>
+                                <option value="Dev Sample">Dev Sample</option>
                             </Form.Select>
                         </Form.Group>
                     </Col>
-                    <Col lg={1} md={12} sm={12}> {/* Note col-lg-1 */}
+                    <Col lg={12} md={12} sm={12}> {/* Note col-lg-1 */}
                         <Form.Group controlId="note">
                             <Form.Label>Note</Form.Label>
                             <Form.Control name="note" placeholder="Note" value={formData.note} onChange={handleChange} />
@@ -177,37 +181,37 @@ const NewStock = () => {
             </Form>
 
             <div className="mb-4" style={{ maxHeight: '600px', overflowY: 'auto', overflowX: 'auto', border: '1px solid #dee2e6' }}>
-                    <Table striped bordered hover className="mb-0 new-stock-table"> {/* Added new-stock-table class */}
-                        <thead>
-                            <tr>
-                                <th>Supplier</th>
-                                <th>Serial Number</th>
-                                <th>Description</th>
-                                <th>Make</th>
-                                <th>Model</th>
-                                <th>Status</th>
-                                <th>Size</th>
-                                <th>Location</th>
-                                <th>Note</th>
+                <Table striped bordered hover className="mb-0 new-stock-table" style={{ fontSize: '0.8rem' }}> {/* Added new-stock-table class */}
+                    <thead>
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Serial Number</th>
+                            <th>Description</th>
+                            <th>Make</th>
+                            <th>Model</th>
+                            <th>Status</th>
+                            <th>Size</th>
+                            <th>Location</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {stockItems.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.supplier}</td>
+                                <td>{item.serialNumber}</td>
+                                <td>{item.description}</td>
+                                <td>{item.make}</td>
+                                <td>{item.model}</td>
+                                <td>{item.status}</td>
+                                <td>{item.size}</td>
+                                <td>{item.location}</td>
+                                <td>{item.note}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {stockItems.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item.supplier}</td>
-                                    <td>{item.serialNumber}</td>
-                                    <td>{item.description}</td>
-                                    <td>{item.make}</td>
-                                    <td>{item.model}</td>
-                                    <td>{item.status}</td>
-                                    <td>{item.size}</td>
-                                    <td>{item.location}</td>
-                                    <td>{item.note}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                </div>
+                        ))}
+                    </tbody>
+                </Table>
+            </div>
 
 
             <Row className="mt-3">

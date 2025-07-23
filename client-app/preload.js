@@ -1,6 +1,14 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld(
+    'electron',
+    {
+        clearCredentials: () => ipcRenderer.send('clear-credentials'),
+        logAxiosError: (message) => ipcRenderer.send('log-axios-error', message),
+    }
+);
+
+contextBridge.exposeInMainWorld(
     'ipcRenderer',
     {
         send: (channel, data) => ipcRenderer.send(channel, data),

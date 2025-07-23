@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, nativeTheme, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, nativeTheme, ipcMain , screen } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const { spawn } = require('child_process');
 const path = require('path');
@@ -14,7 +14,26 @@ let db;
 let apiProcess = null;
 
 // --- File Logging Setup ---
-const logPath = path.join(app.getPath('userData'), 'main-error.log');function logToFile(message) {    const timestamp = new Date().toISOString();    fs.appendFileSync(logPath, `[${timestamp}] ${message}\n`);}// Clear log file on startuptry {    fs.writeFileSync(logPath, '');} catch (err) {    console.error("Failed to clear log file:", err);}// Only log errors to file// logToFile('--- Application Starting ---');
+const mainLogPath = path.join(app.getPath('userData'), 'main-error.log');
+const axiosLogPath = path.join(app.getPath('userData'), 'axios-error.log');
+
+function logToMainFile(message) {
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(mainLogPath, `[${timestamp}] ${message}\n`);
+}
+
+function logToAxiosFile(message) {
+    const timestamp = new Date().toISOString();
+    fs.appendFileSync(axiosLogPath, `[${timestamp}] ${message}\n`);
+}
+
+// Clear log files on startup
+try {
+    fs.writeFileSync(mainLogPath, '');
+    fs.writeFileSync(axiosLogPath, '');
+} catch (err) {
+    console.error("Failed to clear log files:", err);
+}
 // --- End File Logging Setup ---
 
 async function startApi() {
@@ -124,10 +143,18 @@ function initializeDatabase() {
 }
 
 function createWindow() {
+
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width, height } = primaryDisplay.workAreaSize;
+
     win = new BrowserWindow({
-        width: 1920,
-        height: 1080,
-        title: 'Reonet Stock',
+        // width: 1920,
+        // height: 1080,
+        width: width,
+        height: height,
+        x: 0,
+        y: 0,
+        title: 'Reonet Systems',
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true, // Enabled for security and contextBridge usage
@@ -138,7 +165,7 @@ function createWindow() {
     // In development, load from the Vite dev server
     if (process.env.NODE_ENV === 'development') {
         win.loadURL('http://localhost:5173');
-        // win.webContents.openDevTools(); // Disabled by user request
+        win.webContents.openDevTools(); // Disabled by user request
     } else {
         // In production, load the built React app
         win.loadURL(url.format({
@@ -257,6 +284,10 @@ app.setAboutPanelOptions({
     applicationVersion: app.getVersion(),
     credits: 'Developer: Andrew Liebenberg & Gemini CLI\nCompany: Reonet (PTY) LTD',
     iconPath: path.join(__dirname, 'reoicon.png'), // Updated path
+});
+
+ipcMain.on('log-axios-error', (event, message) => {
+    logToAxiosFile(message);
 });
 
 // IPC Handlers

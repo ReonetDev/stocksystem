@@ -71,7 +71,7 @@ const SimsOnHand = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Sim Cards On Hand</h2>
+            <h4 className="mb-2 text-center">Sim Cards On Hand</h4>
 
             <div className="d-flex justify-content-end mb-4">
                 <Button variant="success" onClick={exportToExcel}>
@@ -92,7 +92,7 @@ const SimsOnHand = () => {
                         />
                     </Form.Group>
                     <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                        <Table striped bordered hover responsive>
+                        <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                             <thead>
                                 <tr>
                                     <th>ID</th>

@@ -103,7 +103,7 @@ const AddSim = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Add New Sim Card</h2>
+            <h4 className="mb-2 text-center">Add New Sim Card</h4>
             <Form className="mb-4">
                 <Row className="mb-3">
                     <Col lg={3} md={6} sm={12}>
@@ -224,7 +224,7 @@ const AddSim = () => {
             </Form>
 
             <div className="mb-4" style={{ maxHeight: '600px', overflowY: 'auto', overflowX: 'auto', border: '1px solid #dee2e6' }}>
-                <Table striped bordered hover className="mb-0 new-sim-table">
+                <Table striped bordered hover className="mb-0 new-sim-table" style={{ fontSize: '0.8rem' }}>
                     <thead>
                         <tr>
                             <th>Network</th>

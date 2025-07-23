@@ -53,7 +53,7 @@ namespace StockControlSystem.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin,SysAdmin")]
+        [Authorize(Roles = "User,Admin,SysAdmin")]
         public async Task<ActionResult<SerialStock>> PostSerialStock(SerialStock serialStock)
         {
             if (serialStock.DateTime == default(DateTime))
@@ -67,7 +67,7 @@ namespace StockControlSystem.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,SysAdmin")]
+        [Authorize(Roles = "User,Admin,SysAdmin")]
         public async Task<IActionResult> PutSerialStock(int id, SerialStock serialStock)
         {
             if (id != serialStock.Id)

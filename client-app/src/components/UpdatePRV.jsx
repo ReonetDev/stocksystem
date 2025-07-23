@@ -107,7 +107,7 @@ const UpdatePRV = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Update PRV Device</h2>
+            <h4 className="mb-2 text-center">Update PRV Device</h4>
             <Form onSubmit={handleSubmit}>
                 <div className="border p-3 mb-3">
                     <h4 className="mb-3">Standard Information</h4>
@@ -436,7 +436,7 @@ const UpdatePRV = () => {
                 <Row>
                     <Col className="d-flex justify-content-end">
                         <Button variant="primary" type="submit" disabled={loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Update PRV Device'}
+                            {loading ? <Spinner animation="border" size="sm" /> : 'Update PRV'}
                         </Button>
                     </Col>
                 </Row>

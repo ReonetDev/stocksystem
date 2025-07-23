@@ -210,13 +210,13 @@ const PRVServicing = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">PRV Servicing</h2>
+            <h4 className="mb-2 text-center">PRV Servicing</h4>
             <Row className="mb-4">
                 <Col md={6}>
                     <div style={{ border: '1px solid red', padding: '1rem' }}>
                         <h4 className="mb-3">Services Overdue</h4>
                         <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
-                            <Table striped bordered hover responsive>
+                            <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                             <thead>
                                 <tr>
                                     <th>Business Unit</th>

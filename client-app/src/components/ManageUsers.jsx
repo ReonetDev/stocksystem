@@ -5,7 +5,7 @@ import { Container, Form, Button, Table, Modal, Spinner, Row, Col } from 'react-
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([]);
-    const [newUser, setNewUser] = useState({ firstName: '', lastName: '', email: '', password: '', role: 'User', stock: false, sim: false, prv: false, manage: false, system: false, registrationCode: 'Reonet@2025' });
+    const [newUser, setNewUser] = useState({ firstName: '', lastName: '', email: '', password: 'Password', role: 'User', stock: false, sim: false, prv: false, manage: false, system: false, registrationCode: 'Reonet@2025' });
     const [editingUser, setEditingUser] = useState(null);
     const [modules, setModules] = useState({ stock: false, sim: false, prv: false, manage: false, system: false });
     const [showEditModal, setShowEditModal] = useState(false);
@@ -58,7 +58,7 @@ const ManageUsers = () => {
         try {
             await axios.post('http://localhost:5260/api/users/register', newUser);
             toast.success('User registered successfully!', { autoClose: 1000 });
-            setNewUser({ firstName: '', lastName: '', email: '', password: '', role: 'User', stock: false, sim: false, prv: false, manage: false, system: false, registrationCode: '' });
+            setNewUser({ firstName: '', lastName: '', email: '', password: 'Password', role: 'User', stock: false, sim: false, prv: false, manage: false, system: false, registrationCode: 'Reonet@2025' });
             fetchUsers(); // Refresh the list
         } catch (error) {
             console.error('Failed to add user:', error);
@@ -130,7 +130,7 @@ const ManageUsers = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Manage Users</h2>
+            <h4 className="mb-2 text-center">Manage Users</h4>
             <div style={{ border: '1px solid grey', padding: '1rem' }}>
             <Form onSubmit={handleAddUser} className="mb-4">
                 <h3>Register New User</h3>
@@ -270,7 +270,8 @@ const ManageUsers = () => {
                     </Spinner>
                 </div>
             ) : (
-                <Table striped bordered hover responsive>
+                <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                    <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -298,6 +299,8 @@ const ManageUsers = () => {
                         ))}
                     </tbody>
                 </Table>
+                </div>
+                
             )}
 
             {/* Edit User Modal */}

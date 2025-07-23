@@ -108,7 +108,7 @@ const Profile = () => {
             <Row className="justify-content-center w-100">
                 <Col xs={12} md={6} lg={4}>
                     <Stack gap={3} className="align-items-center">
-                        <h2>User Profile</h2>
+                        <h4>User Profile</h4>
                         {loading && <Spinner animation="border" />}
                         <Form onSubmit={handleProfileSubmit} className="w-100 d-flex flex-column align-items-center">
                             <h4>Update Profile Information</h4>

@@ -113,7 +113,7 @@ const ManageSuppliers = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Manage Suppliers</h2>
+            <h4 className="mb-2 text-center">Manage Suppliers</h4>
             <div style={{ border: '1px solid grey', padding: '1rem' }}>
             <Form onSubmit={handleAddSupplier} className="mb-4">
                 <h3>Add New Supplier</h3>
@@ -180,7 +180,7 @@ const ManageSuppliers = () => {
                     </Spinner>
                 </div>
             ) : (
-                <Table striped bordered hover responsive>
+                <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                     <thead>
                         <tr>
                             <th>ID</th>

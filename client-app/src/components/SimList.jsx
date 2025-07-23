@@ -8,9 +8,11 @@ const SimList = () => {
     const [simCards, setSimCards] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentUserRole, setCurrentUserRole] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
+        setCurrentUserRole(localStorage.getItem('role'));
         fetchSimCards();
     }, []);
 
@@ -61,7 +63,7 @@ const SimList = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Sim Card List</h2>
+            <h4 className="mb-2 text-center">Sim Card List</h4>
             <Form.Group className="mb-3">
                 <Form.Control
                     type="text"
@@ -74,7 +76,7 @@ const SimList = () => {
                 <Spinner animation="border" />
             ) : (
                 <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                    <Table striped bordered hover responsive>
+                    <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -92,14 +94,16 @@ const SimList = () => {
                                 <tr key={sim.id}>
                                     <td>{sim.id}</td>
                                     <td>{sim.network}</td>
-                                <td>{sim.type}</td>
-                                <td>{sim.simNumber}</td>
+                                    <td>{sim.type}</td>
+                                    <td>{sim.simNumber}</td>
                                     <td>{sim.msisdn}</td>
                                     <td>{sim.location}</td>
                                     <td>{sim.status}</td>
                                     <td>
                                         <Button variant="primary" size="sm" onClick={() => handleEdit(sim.id)} className="me-2">Edit</Button>
+                                    {currentUserRole === 'SysAdmin' && (
                                         <Button variant="danger" size="sm" onClick={() => handleDelete(sim.id)}>Delete</Button>
+                                    )}   
                                     </td>
                                 </tr>
                             ))}

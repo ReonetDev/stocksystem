@@ -39,7 +39,7 @@ const DeliveryNotesList = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Delivery Notes</h2>
+            <h4 className="mb-2 text-center">Delivery Notes</h4>
             <Form.Group as={Row} className="mb-3">
                 <Col sm={4}>
                     <Form.Control
@@ -50,7 +50,7 @@ const DeliveryNotesList = () => {
                     />
                 </Col>
             </Form.Group>
-            <Table striped bordered hover>
+            <Table striped bordered hover style={{ fontSize: '0.8rem' }}>
                 <thead>
                     <tr>
                         <th>Delivery Note Number</th>

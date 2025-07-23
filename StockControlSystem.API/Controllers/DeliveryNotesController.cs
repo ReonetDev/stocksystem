@@ -82,6 +82,7 @@ namespace StockControlSystem.API.Controllers
         public IActionResult GetDeliveryNotePdf(int id)
         {
             var deliveryNote = _context.DeliveryNotes.FirstOrDefault(dn => dn.Id == id);
+
             if (deliveryNote == null)
             {
                 return NotFound();

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col, Stack, Spinner } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaArrowLeft } from 'react-icons/fa';
 import axios from '../axiosConfig';
 import { toast } from 'react-toastify';
 
 const Register = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -32,7 +33,7 @@ const Register = () => {
             await axios.post('http://localhost:5260/api/users/register', formData);
             toast.success('Registration successful! Redirecting to login...');
             setTimeout(() => {
-                window.location = '/';
+                navigate('/');
             }, 500); // Redirect after .5 seconds to allow toast to be seen
         } catch (error) {
             console.error('Registration failed', error);

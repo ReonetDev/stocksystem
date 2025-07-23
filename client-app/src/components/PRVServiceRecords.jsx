@@ -79,7 +79,7 @@ const PRVServiceRecords = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">PRV Service Records</h2>
+            <h4 className="mb-2 text-center">PRV Service Records</h4>
             <Form.Group as={Row} className="mb-3">
                 <Form.Label column sm={2}>Select PRV</Form.Label>
                 <Col sm={10}>
@@ -99,7 +99,7 @@ const PRVServiceRecords = () => {
                     <>
                         <h3 className="mt-5 mb-3">Service History</h3>
                         <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-                            <Table striped bordered hover responsive>
+                            <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                                 <thead>
                                     <tr>
                                         <th>Service Date</th>

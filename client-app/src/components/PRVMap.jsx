@@ -168,7 +168,7 @@ const PRVMap = () => {
 
     return (
         <Container className="py-4">
-            <h2 className="mb-4">PRV Map</h2>
+            <h4 className="mb-2 text-center" >PRV Map</h4>
 
             <Row className="mb-3">
                 <Col md={4}>
@@ -206,9 +206,9 @@ const PRVMap = () => {
                 <>
                     <MapContainer
                         center={[-29.0, 24.0]} // Centered on a more general South African location
-                        zoom={6}
+                        zoom={5}
                         scrollWheelZoom={true}
-                        style={{ height: '600px', width: '100%' }}
+                        style={{ height: '500px', width: '100%' }}
                     >
                         <TileLayer
                             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

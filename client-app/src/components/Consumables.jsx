@@ -181,7 +181,7 @@ const Consumables = () => {
 
     return (
         <Container fluid className="py-4">
-            <h3 className="mb-4">Consumables Management</h3>
+            <h4 className="mb-2 text-center">Consumables Management</h4>
             <Row>
                 <Col md={6}>
                     {/* Add New Consumable Section */}

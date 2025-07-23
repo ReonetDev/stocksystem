@@ -3,6 +3,7 @@ import axios from '../axiosConfig';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Table, Spinner, Button } from 'react-bootstrap';
 import { FaArrowLeft, FaPrint } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import reologo from '../assets/reologo.gif'; // Re-import the logo image
 
 const DeliveryNote = () => {

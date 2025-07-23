@@ -112,7 +112,7 @@ const UpdateSim = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Update Sim Card</h2>
+            <h4 className="mb-2 text-center">Update Sim Card</h4>
             <Form onSubmit={handleSubmit}>
                 <Row className="mb-3">
                     <Col lg={3} md={6} sm={12}>

@@ -146,7 +146,7 @@ const AllocateStock = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Allocate Stock</h2>
+            <h4 className="mb-2 text-center">Allocate Stock</h4>
 
             <Form className="mb-4">
                 <Row className="mb-3 align-items-end">

@@ -84,9 +84,9 @@ const StockOnHand = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Stock On Hand</h2>
+            <h4 className="mb-2 text-center">Stock On Hand</h4>
 
-            <div className="d-flex justify-content-end mb-4">
+            <div className="d-flex justify-content-end">
                 <Button variant="success" onClick={exportToExcel}>
                     Export to Excel
                 </Button>
@@ -107,8 +107,8 @@ const StockOnHand = () => {
                                     onChange={e => setStockSearchTerm(e.target.value)}
                                 />
                             </Form.Group>
-                            <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                <Table striped bordered hover responsive>
+                            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -147,8 +147,8 @@ const StockOnHand = () => {
                                     onChange={e => setConsumableSearchTerm(e.target.value)}
                                 />
                             </Form.Group>
-                            <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                                <Table striped bordered hover responsive>
+                            <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
+                                <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                                     <thead>
                                         <tr>
                                             <th>ID</th>

@@ -183,7 +183,7 @@ const AddPRV = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Add New PRV Device</h2>
+            <h4 className="mb-2 text-center">Add New PRV Device</h4>
             <Form className="mb-4">
                 <div className="border p-3 mb-3">
                     <h4 className="mb-3">Standard Information</h4>

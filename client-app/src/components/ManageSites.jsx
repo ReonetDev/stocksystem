@@ -131,7 +131,7 @@ const ManageSites = () => {
 
     return (
         <Container fluid className="py-4">
-            <h2 className="mb-4">Manage Sites</h2>
+            <h4 className="mb-2 text-center">Manage Sites</h4>
             <div className="d-flex justify-content-between mb-3">
                 <Form.Group controlId="search" className="flex-grow-1 me-2">
                     <Form.Control
@@ -149,7 +149,7 @@ const ManageSites = () => {
             {loading ? (
                 <Spinner animation="border" />
             ) : (
-                <Table striped bordered hover responsive>
+                <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                     <thead>
                         <tr>
                             <th>ID</th>
