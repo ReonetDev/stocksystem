@@ -305,7 +305,8 @@ const Consumables = () => {
                     {loading ? (
                         <Spinner animation="border" />
                     ) : (
-                        <Table striped bordered hover responsive>
+                        <div style={{ maxHeight: '750px', overflowY: 'auto' }}>
+                             <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -331,6 +332,8 @@ const Consumables = () => {
                                 ))}
                             </tbody>
                         </Table>
+                        </div>
+
                     )}
                 </Col>
             </Row>
