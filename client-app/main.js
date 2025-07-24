@@ -10,6 +10,7 @@ const axios = require('axios'); // Added axios import
 app.setName('Reonet Stock');
 
 let win;
+let splash;
 let db;
 let apiProcess = null;
 
@@ -35,6 +36,19 @@ try {
     console.error("Failed to clear log files:", err);
 }
 // --- End File Logging Setup ---
+
+function createSplashScreen() {
+    splash = new BrowserWindow({
+        width: 600,
+        height: 400,
+        frame: false,
+        transparent: true,
+        webPreferences: {
+            preload: path.join(__dirname, 'splash-preload.js')
+        }
+    });
+    splash.loadFile('splash.html');
+}
 
 async function startApi() {
     const isDev = process.env.NODE_ENV === 'development';
@@ -82,11 +96,16 @@ async function startApi() {
         });
 
         apiProcess.stdout.on('data', (data) => {
-            // logToFile(`API stdout: ${data.toString()}`); // Keep this if you want API stdout in log
+            if (splash && !splash.isDestroyed()) {
+                splash.webContents.send('api-startup-message', data.toString());
+            }
         });
 
         apiProcess.stderr.on('data', (data) => {
             logToMainFile(`API stderr: ${data.toString()}`);
+            if (splash && !splash.isDestroyed()) {
+                splash.webContents.send('api-startup-message', `ERROR: ${data.toString()}`);
+            }
         });
 
         apiProcess.on('close', (code) => {
@@ -110,7 +129,7 @@ async function isApiRunning() {
   }
 }
 
-async function waitForApi(timeout = 60000) { // Increased timeout
+async function waitForApi(timeout = 30000) { // Increased timeout
   const start = Date.now();
   while (Date.now() - start < timeout) {
     if (await isApiRunning()) {
@@ -118,7 +137,8 @@ async function waitForApi(timeout = 60000) { // Increased timeout
     }
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
-  throw new Error('API failed to start within timeout');
+  logToMainFile(`API failed to start within timeout`);
+  // We don't throw an error here anymore, to allow the main window to open even if the API fails.
 }
 
 function stopApi() {
@@ -152,6 +172,7 @@ function createWindow() {
         height: height,
         x: 0,
         y: 0,
+        show: false, // Create hidden
         title: 'Reonet Systems',
         webPreferences: {
             nodeIntegration: false,
@@ -210,6 +231,8 @@ const menu = Menu.buildFromTemplate(menuTemplate);
 Menu.setApplicationMenu(menu);
 
 app.whenReady().then(async () => {
+    createSplashScreen();
+
     try {
         initializeDatabase();
     } catch (error) {
@@ -225,6 +248,13 @@ app.whenReady().then(async () => {
     }
     
     createWindow();
+
+    win.once('ready-to-show', () => {
+        if (splash) {
+            splash.close();
+        }
+        win.show();
+    });
 });
 
 app.on('before-quit', () => {

@@ -4,7 +4,7 @@
   "description": "Reonet Stock Control System",
   "author": "Reonet (PTY) LTD",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.0.2",
   "copyright": "2025 ©",
   "main": "main.js",
   "type": "commonjs",
@@ -23,7 +23,9 @@
     "files": [
       "dist/**/*",
       "main.js",
-      "preload.js"
+      "preload.js",
+      "splash.html",
+      "splash-preload.js"
     ],
     "icon": "reoicon.png",
     "directories": {
