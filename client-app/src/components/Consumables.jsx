@@ -112,7 +112,7 @@ const Consumables = () => {
             fetchConsumables();
         } catch (error) {
             console.error('Failed to add consumable:', error);
-            toast.error('Failed to add consumable.');
+            toast.error('Failed to add consumable.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }
@@ -154,7 +154,7 @@ const Consumables = () => {
             fetchConsumables();
         } catch (error) {
             console.error('Failed to allocate consumable:', error);
-            toast.error(error.response?.data || 'Failed to allocate consumable.');
+            toast.error(error.response?.data || 'Failed to allocate consumable.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

@@ -56,7 +56,7 @@ const Login = () => {
                 window.ipcRenderer.send('clear-credentials');
             }
 
-            toast.success('Login successful! Redirecting...');
+            toast.success('Login successful! Redirecting...', { autoClose: 500 });
             setTimeout(() => {
                 if (response.data.forcePasswordChange) {
                     navigate('/force-password-change');
@@ -67,7 +67,7 @@ const Login = () => {
         } catch (error) {
             console.error('Login failed', error);
             const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.';
-            toast.error(errorMessage);
+            toast.error(errorMessage , { autoClose: 500 });
         } finally {
             setLoading(false);
         }
@@ -127,9 +127,9 @@ const Login = () => {
                         </Form>
                     </Stack>
                     <div className="mt-5 pb-5 text-center">
-                        <Link to="/register" style={{ fontSize: '0.8rem' }}>Register new user</Link>
+                        <Link to="/register" style={{ fontSize: '0.8rem' }}>Register</Link>
                     </div>
-                    <div className="mt-5 text-center" style={{ color: '#FC6A03' }}>
+                    <div className="mt-5 text-center" style={{ color: '#b103fcff', fontSize: '0.8rem' }}>
                         Version: {appVersion}
                     </div>
                 </Col>

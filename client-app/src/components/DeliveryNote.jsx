@@ -53,7 +53,7 @@ const DeliveryNote = () => {
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Failed to download PDF:', error);
-            toast.error('Failed to generate PDF. Please try again.');
+            toast.error('Failed to generate PDF. Please try again.', { autoClose: 500 });
         }
     };
 

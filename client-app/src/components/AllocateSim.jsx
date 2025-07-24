@@ -36,7 +36,7 @@ const AllocateSim = () => {
             setFilteredSimCards(response.data.$values);
         } catch (error) {
             console.error('Failed to fetch sim cards:', error);
-            toast.error('Failed to load sim cards.');
+            toast.error('Failed to load sim cards.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }
@@ -80,7 +80,7 @@ const AllocateSim = () => {
             await axios.post('http://localhost:5260/api/SimCards/allocate', allocationData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Sim Card allocated successfully!');
+            toast.success('Sim Card allocated successfully!', { autoClose: 500 });
             setSelectedSim(null);
             setAllocationData({
                 simCardId: '',
@@ -92,7 +92,7 @@ const AllocateSim = () => {
             fetchSimCards(); // Refresh the list
         } catch (error) {
             console.error('Failed to allocate sim card:', error);
-            toast.error(error.response?.data || 'Failed to allocate sim card.');
+            toast.error(error.response?.data || 'Failed to allocate sim card.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

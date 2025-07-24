@@ -108,12 +108,12 @@ const ManageUsers = () => {
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('User updated successfully!', { autoClose: 1000 });
+            toast.success('User updated successfully!', { autoClose: 500 });
             setShowEditModal(false);
             fetchUsers(); // Refresh the list
         } catch (error) {
             console.error('Failed to update user:', error);
-            toast.error('Failed to update user.', { autoClose: 1000 });
+            toast.error('Failed to update user.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

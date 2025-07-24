@@ -70,13 +70,13 @@ const ManageRegions = () => {
                 await axios.put(`http://localhost:5260/api/Regions/${currentRegion.id}`, currentRegion, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                toast.success('Region updated successfully!');
+                toast.success('Region updated successfully!', { autoClose: 500 });
             }
             fetchRegions();
             handleCloseModal();
         } catch (error) {
             console.error('Failed to save region:', error);
-            toast.error(error.response?.data || 'Failed to save region.');
+            toast.error(error.response?.data || 'Failed to save region.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

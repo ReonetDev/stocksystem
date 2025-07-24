@@ -88,7 +88,7 @@ const NewStock = () => {
             } catch (error) {
                 console.error('Failed to add stock item:', item, error);
                 const errorMessage = error.response?.data?.message || `Failed to add item ${item.serialNumber}.`;
-                toast.error(errorMessage, { autoClose: 1000 });
+                toast.error(errorMessage, { autoClose: 500 });
                 allSuccess = false;
             }
         }

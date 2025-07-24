@@ -91,7 +91,7 @@ const AddPRV = () => {
 
             } catch (error) {
                 console.error('Failed to fetch initial data:', error);
-                toast.error('Failed to load necessary data.', { autoClose: 1000 });
+                toast.error('Failed to load necessary data.', { autoClose: 500 });
             }
         };
         fetchInitialData();
@@ -151,7 +151,7 @@ const AddPRV = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!isFormValid()) {
-            toast.error('Please fill in all required fields.', { autoClose: 1000 });
+            toast.error('Please fill in all required fields.', { autoClose: 500 });
             return;
         }
 
@@ -167,7 +167,7 @@ const AddPRV = () => {
         } catch (error) {
             console.error('Failed to add PRV device:', error);
             const errorMessage = error.response?.data?.message || 'Failed to add PRV device.';
-            toast.error(errorMessage, { autoClose: 1000 });
+            toast.error(errorMessage, { autoClose: 500 });
         }
         setLoading(false);
     };

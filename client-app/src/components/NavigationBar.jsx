@@ -55,7 +55,7 @@ const NavigationBar = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
-        toast.info('You have been logged out.');
+        toast.info('You have been logged out.', { autoClose: 500 });
         navigate('/');
     };
 
@@ -71,7 +71,7 @@ const NavigationBar = () => {
             });
         } catch (error) {
             console.error('Token validation failed', error);
-            toast.error('Your session has expired. Please log in again.');
+            toast.error('Your session has expired. Please log in again.', { autoClose: 500 });
             handleLogout();
         }
     };

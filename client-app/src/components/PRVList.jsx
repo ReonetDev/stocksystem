@@ -24,7 +24,7 @@ const PRVList = () => {
             setPrvDevices(response.data.$values);
         } catch (error) {
             console.error('Failed to fetch PRV devices:', error);
-            toast.error('Failed to load PRV devices.');
+            toast.error('Failed to load PRV devices.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

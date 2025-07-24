@@ -71,13 +71,13 @@ const ManageBusinessUnits = () => {
                 await axios.put(`http://localhost:5260/api/BusinessUnits/${currentBusinessUnit.id}`, currentBusinessUnit, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                toast.success('Business Unit updated successfully!');
+                toast.success('Business Unit updated successfully!', { autoClose: 500 });
             }
             fetchBusinessUnits();
             handleCloseModal();
         } catch (error) {
             console.error('Failed to save business unit:', error);
-            toast.error('Failed to save business unit.');
+            toast.error('Failed to save business unit.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

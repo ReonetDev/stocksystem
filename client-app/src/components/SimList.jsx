@@ -43,11 +43,11 @@ const SimList = () => {
                 await axios.delete(`http://localhost:5260/api/SimCards/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                toast.success('Sim Card deleted successfully!');
+                toast.success('Sim Card deleted successfully!', { autoClose: 500 });
                 fetchSimCards(); // Refresh the list
             } catch (error) {
                 console.error('Failed to delete sim card:', error);
-                toast.error('Failed to delete sim card.');
+                toast.error('Failed to delete sim card.', { autoClose: 500 });
             }
         }
     };

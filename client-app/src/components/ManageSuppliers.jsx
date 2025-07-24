@@ -100,12 +100,12 @@ const ManageSuppliers = () => {
             await axios.put(`http://localhost:5260/api/Suppliers/${editingSupplier.id}`, editingSupplier, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Supplier updated successfully!', { autoClose: 1000 });
+            toast.success('Supplier updated successfully!', { autoClose: 500 });
             setShowEditModal(false);
             fetchSuppliers(); // Refresh the list
         } catch (error) {
             console.error('Failed to update supplier:', error);
-            toast.error('Failed to update supplier.', { autoClose: 1000 });
+            toast.error('Failed to update supplier.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

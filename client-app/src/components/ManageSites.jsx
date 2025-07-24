@@ -109,13 +109,13 @@ const ManageSites = () => {
                 await axios.put(`http://localhost:5260/api/Sites/${currentSite.id}`, siteToUpdate, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                toast.success('Site updated successfully!');
+                toast.success('Site updated successfully!', { autoClose: 500 });
             }
             fetchSites();
             handleCloseModal();
         } catch (error) {
             console.error('Failed to save site:', error);
-            toast.error('Failed to save site.');
+            toast.error('Failed to save site.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

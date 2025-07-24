@@ -27,7 +27,7 @@ const StockOnHand = () => {
                 setConsumables(consumablesResponse.data.$values);
             } catch (error) {
                 console.error('Failed to fetch data:', error);
-                toast.error('Failed to load stock and consumable data.');
+                toast.error('Failed to load stock and consumable data.', { autoClose: 500 });
             } finally {
                 setLoading(false);
             }

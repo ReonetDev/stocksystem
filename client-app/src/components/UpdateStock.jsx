@@ -65,12 +65,12 @@ const UpdateStock = () => {
             await axios.put(`http://localhost:5260/api/serialstock/${id}`, formData, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
             });
-            toast.success('Stock updated successfully!');
+            toast.success('Stock updated successfully!', { autoClose: 500 });
             navigate('/stock'); // Redirect to a list or another appropriate page
         } catch (error) {
             console.error('Failed to update stock', error);
             const errorMessage = error.response?.data?.message || 'Failed to update stock. Please try again.';
-            toast.error(errorMessage);
+            toast.error(errorMessage, { autoClose: 500 });
         } finally {
             setLoading(false);
         }

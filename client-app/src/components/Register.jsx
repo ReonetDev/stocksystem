@@ -31,14 +31,14 @@ const Register = () => {
         setLoading(true);
         try {
             await axios.post('http://localhost:5260/api/users/register', formData);
-            toast.success('Registration successful! Redirecting to login...');
+            toast.success('Registration successful! Redirecting to login...', { autoClose: 500 });
             setTimeout(() => {
                 navigate('/');
             }, 500); // Redirect after .5 seconds to allow toast to be seen
         } catch (error) {
             console.error('Registration failed', error);
             const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
-            toast.error(errorMessage);
+            toast.error(errorMessage, { autoClose: 500 });
         } finally {
             setLoading(false);
         }
@@ -77,7 +77,7 @@ const Register = () => {
                                 <Form.Control name="password" type="password" placeholder="Password" onChange={handleChange} style={{ minWidth: '250px' }} />
                             </Form.Group>
                             <Form.Group className="mb-3" style={{ width: '100%' }}>
-                                <Form.Control name="registrationCode" type="text" placeholder="Registration Code" onChange={handleChange} style={{ minWidth: '250px' }} />
+                                <Form.Control name="registrationCode" type="password" placeholder="Registration Code" onChange={handleChange} style={{ minWidth: '250px' }} />
                             </Form.Group>
                             <Button variant="primary" type="submit" disabled={!isFormValid || loading} className="w-50">
                                 {loading ? <Spinner animation="border" size="sm" /> : 'Register'}

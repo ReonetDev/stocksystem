@@ -104,12 +104,12 @@ const ManageTechnicians = () => {
             await axios.delete(`http://localhost:5260/api/Technicians/${technicianToDelete.id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Technician deleted successfully!');
+            toast.success('Technician deleted successfully!', { autoClose: 500 });
             fetchTechnicians();
             handleCloseDeleteConfirm();
         } catch (error) {
             console.error('Failed to delete technician:', error);
-            toast.error('Failed to delete technician.');
+            toast.error('Failed to delete technician.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

@@ -85,11 +85,11 @@ const UpdatePRV = () => {
             await axios.put(`http://localhost:5260/api/PRVDevices/${id}`, { ...dataToSend, Id: parseInt(id), siteId: parseInt(formData.siteId) }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('PRV Device updated successfully!');
+            toast.success('PRV Device updated successfully!', { autoClose: 500 });
             navigate('/prv-list'); // Redirect to a list or another appropriate page
         } catch (error) {
             console.error('Failed to update PRV device:', error);
-            toast.error('Failed to update PRV device.');
+            toast.error('Failed to update PRV device.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

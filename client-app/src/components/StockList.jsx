@@ -23,7 +23,7 @@ const StockList = () => {
             } catch (error) {
                 console.error('Failed to fetch stock', error);
                 const errorMessage = error.response?.data?.message || 'Failed to fetch stock. Please try again.';
-                toast.error(errorMessage);
+                toast.error(errorMessage, { autoClose: 500 });
             } finally {
                 setLoading(false);
             }
@@ -43,11 +43,11 @@ const StockList = () => {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
                 });
                 setStock(stock.filter((item) => item.id !== id));
-                toast.success('Stock item deleted successfully!');
+                toast.success('Stock item deleted successfully!', { autoClose: 500 });
             } catch (error) {
                 console.error('Failed to delete stock', error);
                 const errorMessage = error.response?.data?.message || 'Failed to delete stock. Please try again.';
-                toast.error(errorMessage);
+                toast.error(errorMessage, { autoClose: 500 });
             } finally {
                 setLoading(false);
             }

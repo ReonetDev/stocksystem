@@ -86,13 +86,13 @@ const ManageClients = () => {
                 await axios.put(`http://localhost:5260/api/Clients/${currentClient.id}`, currentClient, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                toast.success('Client updated successfully!');
+                toast.success('Client updated successfully!', { autoClose: 500 });
             }
             fetchClients();
             handleCloseModal();
         } catch (error) {
             console.error('Failed to save client:', error);
-            toast.error('Failed to save client.');
+            toast.error('Failed to save client.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

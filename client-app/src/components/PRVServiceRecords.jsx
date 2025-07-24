@@ -37,7 +37,7 @@ const PRVServiceRecords = () => {
             setServiceRecords(response.data.$values);
         } catch (error) {
             console.error('Failed to fetch service records:', error);
-            toast.error('Failed to load service records.');
+            toast.error('Failed to load service records.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }
@@ -52,7 +52,7 @@ const PRVServiceRecords = () => {
             setServiceDocuments(prev => [...prev, ...response.data.$values]);
         } catch (error) {
             console.error(`Failed to fetch documents for service ${serviceId}:`, error);
-            toast.error(`Failed to load documents for service ${serviceId}.`);
+            toast.error(`Failed to load documents for service ${serviceId}.`, { autoClose: 500 });
         }
     };
 

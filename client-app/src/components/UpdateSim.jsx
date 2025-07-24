@@ -85,11 +85,11 @@ const UpdateSim = () => {
             await axios.put(`http://localhost:5260/api/SimCards/${id}`, formData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Sim Card updated successfully!');
+            toast.success('Sim Card updated successfully!', { autoClose: 500 });
             navigate('/sim-list'); // Redirect to a list or another appropriate page
         } catch (error) {
             console.error('Failed to update sim card:', error);
-            toast.error('Failed to update sim card.');
+            toast.error('Failed to update sim card.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

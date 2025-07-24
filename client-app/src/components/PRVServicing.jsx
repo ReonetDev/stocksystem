@@ -179,12 +179,12 @@ const PRVServicing = () => {
                     Authorization: `Bearer ${token}`
                 },
             });
-            toast.success('Service record updated successfully!');
+            toast.success('Service record updated successfully!', { autoClose: 500 });
             fetchPRVServices();
             handleCancelEdit();
         } catch (error) {
             console.error('Failed to update service record:', error);
-            toast.error('Failed to update service record.');
+            toast.error('Failed to update service record.', { autoClose: 500 });
         }
     };
 

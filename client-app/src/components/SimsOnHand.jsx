@@ -24,7 +24,7 @@ const SimsOnHand = () => {
             setSimCards(response.data.$values);
         } catch (error) {
             console.error('Failed to fetch sim cards:', error);
-            toast.error('Failed to load sim cards.');
+            toast.error('Failed to load sim cards.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

@@ -30,12 +30,12 @@ const ForcePasswordChange = () => {
             }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Password updated successfully!');
+            toast.success('Password updated successfully!', { autoClose: 500 });
             // Redirect to login page after successful password change
             navigate('/');
         } catch (error) {
             console.error('Password change failed:', error);
-            toast.error(error.response?.data || 'Failed to change password.');
+            toast.error(error.response?.data || 'Failed to change password.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }

@@ -32,10 +32,10 @@ const AllocateStock = () => {
             });
             setFoundStock(response.data);
             setFormData(prev => ({ ...prev, location: response.data.location, status: response.data.status }));
-            toast.success('Stock item found!', { autoClose: 1000 });
+            toast.success('Stock item found!', { autoClose: 500 });
         } catch (error) {
             console.error('Failed to search stock:', error);
-            toast.error('Stock item not found or an error occurred.', { autoClose: 1000 });
+            toast.error('Stock item not found or an error occurred.', { autoClose: 500 });
         } finally {
             setLoading(false);
         }
@@ -43,7 +43,7 @@ const AllocateStock = () => {
 
     const handleAddToArray = () => {
         if (!foundStock || !formData.location || !formData.status) {
-            toast.error('Please search for a stock item and select a location and status.', { autoClose: 1000 });
+            toast.error('Please search for a stock item and select a location and status.', { autoClose: 500 });
             return;
         }
 
@@ -80,7 +80,7 @@ const AllocateStock = () => {
             // Step 1: If requested, create the delivery note first.
             if (generateDeliveryNote) {
                 if (stockItemsToUpdate.length === 0) {
-                    toast.error("Please add items to the list before generating a delivery note.");
+                    toast.error("Please add items to the list before generating a delivery note.", { autoClose: 500 });
                     return;
                 }
 
@@ -98,11 +98,11 @@ const AllocateStock = () => {
                         headers: { Authorization: `Bearer ${token}` },
                     });
                     deliveryNoteId = response.data.id;
-                    toast.success('Delivery note created successfully!');
+                    toast.success('Delivery note created successfully!', { autoClose: 500 });
                 } catch (error) {
                     console.error('Failed to create delivery note:', error.response?.data || error.message);
                     const errorMessage = error.response?.data?.title || error.response?.data || 'Failed to create delivery note.';
-                    toast.error(errorMessage);
+                    toast.error(errorMessage, { autoClose: 500 });
                     return; // Abort if delivery note fails
                 }
             }
@@ -116,14 +116,14 @@ const AllocateStock = () => {
                     });
                 } catch (error) {
                     console.error(`Failed to update stock item ${item.serialNumber}:`, error);
-                    toast.error(`Failed to update item ${item.serialNumber}.`);
+                    toast.error(`Failed to update item ${item.serialNumber}.`, { autoClose: 500 });
                     allUpdatesSucceeded = false;
                 }
             }
 
             // Step 3: Finalize based on success.
             if (allUpdatesSucceeded) {
-                toast.success('All selected stock items updated successfully!');
+                toast.success('All selected stock items updated successfully!', { autoClose: 500 });
                 setStockItemsToUpdate([]);
                 setDeliveryNoteComments('');
                 setGenerateDeliveryNote(false);
@@ -132,7 +132,7 @@ const AllocateStock = () => {
                     navigate(`/delivery-note/${deliveryNoteId}`);
                 }
             } else {
-                toast.error('Some items failed to update. Please check the list and try again.');
+                toast.error('Some items failed to update. Please check the list and try again.', { autoClose: 500 });
             }
 
         } finally {

@@ -51,13 +51,13 @@ const AddSim = () => {
     const handleAddToArray = (e) => {
         e.preventDefault();
         if (!isFormValid) {
-            toast.error('Please fill in all required fields before adding to the list.', { autoClose: 1000 });
+            toast.error('Please fill in all required fields before adding to the list.', { autoClose: 500 });
             return;
         }
 
         // Check for duplicate Sim Number
         if (simCards.some(sim => sim.simNumber === formData.simNumber)) {
-            toast.error(`Sim Number '${formData.simNumber}' already exists in the list.`, { autoClose: 1000 });
+            toast.error(`Sim Number '${formData.simNumber}' already exists in the list.`, { autoClose: 500 });
             return;
         }
 
@@ -79,7 +79,7 @@ const AddSim = () => {
             } catch (error) {
                 console.error('Failed to add sim card:', sim, error);
                 const errorMessage = error.response?.data?.message || `Failed to add sim card ${sim.simNumber}.`;
-                toast.error(errorMessage, { autoClose: 1000 });
+                toast.error(errorMessage, { autoClose: 500 });
                 allSuccess = false;
             }
         }
@@ -88,7 +88,7 @@ const AddSim = () => {
             toast.success('All sim cards added successfully!', { autoClose: 500 });
             setSimCards([]); // Clear the list after successful submission
         } else {
-            toast.error('Some sim cards failed to add. Check console for details.', { autoClose: 1000 });
+            toast.error('Some sim cards failed to add. Check console for details.', { autoClose: 500 });
         }
         setLoading(false);
     };

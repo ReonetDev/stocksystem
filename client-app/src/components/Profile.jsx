@@ -78,7 +78,7 @@ const Profile = () => {
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
         if (!passwordsMatch) {
-            toast.error('New password and confirm new password do not match.');
+            toast.error('New password and confirm new password do not match.', { autoClose: 500 });
             return;
         }
         setLoading(true);
@@ -87,12 +87,12 @@ const Profile = () => {
             await axios.post('http://localhost:5260/api/users/change-password', passwordData, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            toast.success('Password changed successfully!');
+            toast.success('Password changed successfully!', { autoClose: 500 });
             setPasswordData({ currentPassword: '', newPassword: '', confirmNewPassword: '' }); // Clear form
         } catch (error) {
             console.error('Failed to change password', error);
             const errorMessage = error.response?.data?.message || 'Failed to change password. Please try again.';
-            toast.error(errorMessage);
+            toast.error(errorMessage, { autoClose: 500 });
         } finally {
             setLoading(false);
         }

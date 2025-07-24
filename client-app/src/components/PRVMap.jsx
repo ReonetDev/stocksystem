@@ -98,7 +98,7 @@ const PRVMap = () => {
             setPrvServices(response.data.$values);
         } catch (error) {
             console.error('Failed to fetch PRV services:', error);
-            toast.error('Failed to load PRV services.');
+            toast.error('Failed to load PRV services.', { autoClose: 500 });
         }
     };
 
@@ -119,7 +119,7 @@ const PRVMap = () => {
             setSites(siteRes.data.$values);
         } catch (error) {
             console.error('Failed to fetch filter options:', error);
-            toast.error('Failed to load filter options.');
+            toast.error('Failed to load filter options.', { autoClose: 500 });
         }
     };
 
