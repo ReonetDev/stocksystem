@@ -4,7 +4,7 @@
   "description": "Reonet Stock Control System",
   "author": "Reonet (PTY) LTD",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "copyright": "2025 ©",
   "main": "main.js",
   "type": "commonjs",
@@ -25,7 +25,8 @@
       "main.js",
       "preload.js",
       "splash.html",
-      "splash-preload.js"
+      "splash-preload.js",
+      "reoicon.png"
     ],
     "icon": "reoicon.png",
     "directories": {
@@ -45,8 +46,8 @@
           "to": "api/win-x64/"
         },
         {
-          "from": "dist/assets/",
-          "to": "dist/assets/"
+          "from": "dist/assets",
+          "to": "assets"
         }
       ]
     },
@@ -57,8 +58,8 @@
           "to": "api/osx-arm64/"
         },
         {
-          "from": "dist/assets/",
-          "to": "dist/assets/"
+          "from": "dist/assets",
+          "to": "assets"
         }
       ]
     }
