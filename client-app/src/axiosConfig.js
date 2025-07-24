@@ -17,8 +17,8 @@ instance.interceptors.response.use(
             if (window.electron && window.electron.clearCredentials) {
                 window.electron.clearCredentials();
             }
-            // Reload the window to go back to login screen
-            window.location.reload();
+            // Navigate to the login screen
+            window.location.href = '/login';
         }
         return Promise.reject(error);
     }
