@@ -23,6 +23,19 @@ const NewStock = () => {
     const [loading, setLoading] = useState(false);
     const [suppliers, setSuppliers] = useState([]);
 
+    const addedFormData = {
+        // supplier: '',
+        serialNumber: '',
+        // description: '',
+        // make: '',
+        // model: '',
+        // status: '',
+        // note: '',
+        // size: '',
+        // location: '',
+        dateTime: new Date().toISOString(), // Add dateTime field
+    };
+
     useEffect(() => {
         const fetchSuppliers = async () => {
             try {
@@ -33,7 +46,7 @@ const NewStock = () => {
                 setSuppliers(response.data.$values);
             } catch (error) {
                 console.error('Failed to fetch suppliers:', error);
-                toast.error('Failed to load suppliers.', { autoClose: 1000 });
+                toast.error('Failed to load suppliers.', { autoClose: 500 });
             }
         };
         fetchSuppliers();
@@ -46,18 +59,19 @@ const NewStock = () => {
     const handleAddToArray = (e) => {
         e.preventDefault();
         if (!isFormValid) {
-            toast.error('Please fill in all fields before adding to the list.', { autoClose: 1000 });
+            toast.error('Please fill in all fields before adding to the list.', { autoClose: 500 });
             return;
         }
 
         // Check for duplicate serial number
         if (stockItems.some(item => item.serialNumber === formData.serialNumber)) {
-            toast.error(`Serial Number '${formData.serialNumber}' already exists in the list.`, { autoClose: 1000 });
+            toast.error(`Serial Number '${formData.serialNumber}' already exists in the list.`, { autoClose: 500 });
             return;
         }
 
         setStockItems([...stockItems, { ...formData, dateTime: new Date().toISOString() }]);
-        setFormData(initialFormData); // Clear form after adding
+        // setFormData(initialFormData); // Clear form after adding
+        setFormData(addedFormData); // Clear form after adding
         toast.success('Item added to list!', { autoClose: 500 });
     };
 
@@ -85,7 +99,7 @@ const NewStock = () => {
             // Optionally redirect or stay on page
             navigate('/stock');
         } else {
-            toast.error('Some items failed to add. Check console for details.', { autoClose: 1000 });
+            toast.error('Some items failed to add. Check console for details.', { autoClose: 500 });
         }
         setLoading(false);
     };
@@ -126,7 +140,14 @@ const NewStock = () => {
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="make">
                             <Form.Label>Make</Form.Label>
-                            <Form.Control name="make" placeholder="Make" value={formData.make} onChange={handleChange} />
+                            <Form.Select name="make" value={formData.make} onChange={handleChange}>
+                                <option value="">Select Make</option>
+                                {suppliers.map((supplier) => (
+                                    <option key={supplier.id} value={supplier.description}>
+                                        {supplier.description}
+                                    </option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                 </Row>
