@@ -1,21 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Alert } from 'react-bootstrap';
+import { Container, Button, Alert, ProgressBar } from 'react-bootstrap';
 
 const CheckForUpdate = () => {
     const [status, setStatus] = useState('');
+    const [downloadProgress, setDownloadProgress] = useState(0);
+    const [isDownloading, setIsDownloading] = useState(false);
 
     useEffect(() => {
-        const removeListener = window.ipcRenderer.on('update-status', (message) => {
+        const removeStatusListener = window.ipcRenderer.on('update-status', (message) => {
             setStatus(message);
+            if (message === 'Update available.') {
+                setIsDownloading(true);
+            }
+            if (message.includes('Update downloaded') || message.includes('Error')) {
+                setIsDownloading(false);
+            }
+        });
+
+        const removeProgressListener = window.ipcRenderer.on('download-progress', (progress) => {
+            setDownloadProgress(progress);
         });
 
         return () => {
-            removeListener();
+            removeStatusListener();
+            removeProgressListener();
         };
     }, []);
 
     const handleCheckForUpdate = () => {
         setStatus('Checking for updates...');
+        setDownloadProgress(0);
+        setIsDownloading(false);
         window.ipcRenderer.send('check-for-updates');
     };
 
@@ -27,6 +42,7 @@ const CheckForUpdate = () => {
         <Container fluid className="py-4">
             <h4 className="mb-2 text-center">Check for Updates</h4>
             <Button onClick={handleCheckForUpdate} className="mb-3">Check for Updates</Button>
+            {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}
             {status && (
                 <Alert variant={status.includes('Error') ? 'danger' : 'info'}>
                     {status}

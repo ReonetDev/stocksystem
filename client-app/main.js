@@ -59,13 +59,13 @@ async function startApi() {
                 : path.join(apiPath, 'osx-arm64', 'StockControlSystem.API');
         }
     } else {
-        logToFile(`Unsupported platform: ${process.platform}`);
+        logToMainFile(`Unsupported platform: ${process.platform}`);
         return;
     }
 
     try {
         if (!fs.existsSync(executablePath)) {
-            logToFile(`Error: API executable not found at path: ${executablePath}`);
+            logToMainFile(`Error: API executable not found at path: ${executablePath}`);
             return;
         }
 
@@ -86,18 +86,18 @@ async function startApi() {
         });
 
         apiProcess.stderr.on('data', (data) => {
-            logToFile(`API stderr: ${data.toString()}`);
+            logToMainFile(`API stderr: ${data.toString()}`);
         });
 
         apiProcess.on('close', (code) => {
-            logToFile(`API process exited with code ${code}`);
+            logToMainFile(`API process exited with code ${code}`);
         });
         
         await waitForApi();
 
     } catch (error) {
-        logToFile(`Error during API startup: ${error.message}`);
-        logToFile(`Stack trace: ${error.stack}`);
+        logToMainFile(`Error during API startup: ${error.message}`);
+        logToMainFile(`Stack trace: ${error.stack}`);
     }
 }
 
@@ -148,8 +148,6 @@ function createWindow() {
     const { width, height } = primaryDisplay.workAreaSize;
 
     win = new BrowserWindow({
-        // width: 1920,
-        // height: 1080,
         width: width,
         height: height,
         x: 0,
@@ -215,15 +213,15 @@ app.whenReady().then(async () => {
     try {
         initializeDatabase();
     } catch (error) {
-        logToFile(`FATAL: Failed to initialize database: ${error.message}`);
-        logToFile(`Stack trace: ${error.stack}`);
+        logToMainFile(`FATAL: Failed to initialize database: ${error.message}`);
+        logToMainFile(`Stack trace: ${error.stack}`);
     }
 
     try {
         await startApi();
     } catch (error) {
-        logToFile(`FATAL: Failed to start API: ${error.message}`);
-        logToFile(`Stack trace: ${error.stack}`);
+        logToMainFile(`FATAL: Failed to start API: ${error.message}`);
+        logToMainFile(`Stack trace: ${error.stack}`);
     }
     
     createWindow();
@@ -251,6 +249,10 @@ ipcMain.on('check-for-updates', () => {
 
 autoUpdater.on('update-available', () => {
     win.webContents.send('update-status', 'Update available.');
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+    win.webContents.send('download-progress', progressObj.percent);
 });
 
 autoUpdater.on('update-not-available', () => {
