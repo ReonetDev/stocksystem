@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Alert, ProgressBar } from 'react-bootstrap';
+import { Container, Button, Alert, ProgressBar, Row, Col } from 'react-bootstrap';
 
 const CheckForUpdate = () => {
     const [status, setStatus] = useState('');
@@ -28,7 +28,7 @@ const CheckForUpdate = () => {
     }, []);
 
     const handleCheckForUpdate = () => {
-        setStatus('Checking for updates...');
+        setStatus('Checking for updates..., the system will start downloading the update if found!');
         setDownloadProgress(0);
         setIsDownloading(false);
         window.ipcRenderer.send('check-for-updates');
@@ -40,17 +40,19 @@ const CheckForUpdate = () => {
 
     return (
         <Container fluid className="py-4">
-            <h4 className="mb-2 text-center">Check for Updates</h4>
-            <Button onClick={handleCheckForUpdate} className="mb-3">Check for Updates</Button>
-            {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}
-            {status && (
-                <Alert variant={status.includes('Error') ? 'danger' : 'info'}>
-                    {status}
-                    {status.includes('Restart now?') && (
-                        <Button onClick={handleRestart} variant="primary" size="sm" className="ms-2">Restart</Button>
+            <h4 className="mb-4 text-center">Check server for updates!</h4>
+                    <Button onClick={handleCheckForUpdate} className="btn-info mb-3">Check</Button>
+                    {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}
+                    {status && (
+                        <Alert variant={status.includes('Error') ? 'danger' : 'primary'}>
+                            {status}
+                            {status.includes('Restart now?') && (
+                                <Button onClick={handleRestart} variant="primary" size="sm" className="ms-2">Restart</Button>
+                            )}
+                        </Alert>
                     )}
-                </Alert>
-            )}
+
+
         </Container>
     );
 };
