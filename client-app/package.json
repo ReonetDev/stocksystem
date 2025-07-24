@@ -34,6 +34,7 @@
       "owner": "ReonetDev",
       "repo": "stocksystem"
     },
+    "artifactName": "Reonet.Stock.Setup.${version}.${ext}",
     "win": {
       "target": ["nsis:x64"],
       "extraResources": [
