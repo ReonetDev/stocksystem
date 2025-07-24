@@ -36,7 +36,7 @@ namespace StockControlSystem.API.Services
                 // Based on the release.yml, the API executable is inside the packaged application.
                 // The client assets are also packaged. We need to find their relative path.
                 // A common structure is `api` and `dist` folders at the same level.
-                var prodPath = Path.GetFullPath(Path.Combine(assemblyLocation, "..", "..", "assets"));
+                var prodPath = Path.GetFullPath(Path.Combine(assemblyLocation, "..", "..", "assets", "assets"));
                 if (Directory.Exists(prodPath))
                 {
                     _assetsPath = prodPath;
