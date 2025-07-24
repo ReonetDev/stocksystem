@@ -18,15 +18,19 @@ let apiProcess = null;
 const mainLogPath = path.join(app.getPath('userData'), 'main-error.log');
 const axiosLogPath = path.join(app.getPath('userData'), 'axios-error.log');
 
-function logToMainFile(message) {
-    const timestamp = new Date().toISOString();
-    fs.appendFileSync(mainLogPath, `[${timestamp}] ${message}\n`);
-}
+function logToMainFile(message) {    
+    const now = new Date();    
+    now.setHours(now.getHours() + 2);
+    const timestamp = now.toISOString();
+    fs.appendFileSync(mainLogPath, `[${timestamp}] ${message}
+`);}
 
 function logToAxiosFile(message) {
-    const timestamp = new Date().toISOString();
-    fs.appendFileSync(axiosLogPath, `[${timestamp}] ${message}\n`);
-}
+    const now = new Date();
+    now.setHours(now.getHours() + 2);    
+    const timestamp = now.toISOString();    
+    fs.appendFileSync(axiosLogPath, `[${timestamp}] ${message}
+`);}
 
 // Clear log files on startup
 try {

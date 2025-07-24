@@ -43,6 +43,10 @@
         {
           "from": "api/win-x64/",
           "to": "api/win-x64/"
+        },
+        {
+          "from": "dist/assets/",
+          "to": "dist/assets/"
         }
       ]
     },
@@ -51,6 +55,10 @@
         {
           "from": "api/osx-arm64/",
           "to": "api/osx-arm64/"
+        },
+        {
+          "from": "dist/assets/",
+          "to": "dist/assets/"
         }
       ]
     }
