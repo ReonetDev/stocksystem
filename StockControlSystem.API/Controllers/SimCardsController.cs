@@ -45,7 +45,7 @@ namespace StockControlSystem.API.Controllers
 
         // POST: api/SimCards
         [HttpPost]
-        [Authorize(Roles = "Admin,SysAdmin")]
+        [Authorize(Roles = "User,Admin,SysAdmin")]
         public async Task<ActionResult<SimCard>> PostSimCard(SimCard simCard)
         {
             if (simCard.StartDate == default(DateTime))
@@ -65,7 +65,7 @@ namespace StockControlSystem.API.Controllers
 
         // PUT: api/SimCards/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin,SysAdmin")]
+        [Authorize(Roles = "User,Admin,SysAdmin")]
         public async Task<IActionResult> PutSimCard(int id, SimCard simCard)
         {
             if (id != simCard.Id)
