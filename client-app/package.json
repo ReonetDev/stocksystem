@@ -4,7 +4,7 @@
   "description": "Reonet Stock Control System",
   "author": "Reonet (PTY) LTD",
   "private": true,
-  "version": "1.0.4",
+  "version": "1.0.5",
   "copyright": "2025 ©",
   "main": "main.js",
   "type": "commonjs",
@@ -39,7 +39,9 @@
     },
     "artifactName": "Reonet.Stock.Setup.${version}.${ext}",
     "win": {
-      "target": ["nsis:x64"],
+      "target": [
+        "nsis:x64"
+      ],
       "extraResources": [
         {
           "from": "api/win-x64/",
@@ -65,6 +67,7 @@
     }
   },
   "dependencies": {
+    "@amcharts/amcharts5": "^5.13.4",
     "axios": "^1.10.0",
     "better-sqlite3": "^12.2.0",
     "bootstrap": "^5.3.7",

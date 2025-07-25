@@ -43,6 +43,7 @@ const AddPRV = () => {
         meter_Type: '',
         meter_Manufacturer: '',
         meter_Serial_no: '',
+        transducer: '',
         strainer_Dirt_Box: false,
         meter_Functional: false,
         siteId: '',
@@ -60,6 +61,7 @@ const AddPRV = () => {
     const [selectedRegionId, setSelectedRegionId] = useState('');
     const [filteredClients, setFilteredClients] = useState([]);
     const [filteredSites, setFilteredSites] = useState([]);
+    const [reoMeters, setReoMeters] = useState([]);
 
     const prvStatuses = ["Open", "Closed"];
     const prvMakes = ["Bermad", "Cla-Val", "Singer", "Dura-Flo", "Braukmann", "JRG", "Clayton", "Honeywell"];
@@ -75,12 +77,13 @@ const AddPRV = () => {
             try {
                 const token = localStorage.getItem('token');
 
-                const [businessUnitsRes, clientsRes, regionsRes, sitesRes, techniciansRes] = await Promise.all([
+                const [businessUnitsRes, clientsRes, regionsRes, sitesRes, techniciansRes, reoMetersRes] = await Promise.all([
                     axios.get('http://localhost:5260/api/BusinessUnits', { headers: { Authorization: `Bearer ${token}` } }),
                     axios.get('http://localhost:5260/api/Clients', { headers: { Authorization: `Bearer ${token}` } }),
                     axios.get('http://localhost:5260/api/Regions', { headers: { Authorization: `Bearer ${token}` } }),
                     axios.get('http://localhost:5260/api/Sites', { headers: { Authorization: `Bearer ${token}` } }),
                     axios.get('http://localhost:5260/api/Technicians', { headers: { Authorization: `Bearer ${token}` } }),
+                    axios.get('http://localhost:5260/api/ReoMeters', { headers: { Authorization: `Bearer ${token}` } }),
                 ]);
 
                 setBusinessUnitsList(businessUnitsRes.data.$values);
@@ -88,6 +91,7 @@ const AddPRV = () => {
                 setRegionsList(regionsRes.data.$values);
                 setSites(sitesRes.data.$values);
                 setTechnicians(techniciansRes.data.$values);
+                setReoMeters(reoMetersRes.data.$values);
 
             } catch (error) {
                 console.error('Failed to fetch initial data:', error);
@@ -537,6 +541,17 @@ const AddPRV = () => {
               <Form.Group controlId="meter_Serial_no">
                 <Form.Label>Meter Serial No</Form.Label>
                 <Form.Control name="meter_Serial_no" placeholder="Meter Serial No" value={formData.meter_Serial_no} onChange={handleChange} />
+              </Form.Group>
+            </Col>
+            <Col lg={3} md={6} sm={12}>
+              <Form.Group controlId="transducer">
+                <Form.Label>Transducer</Form.Label>
+                <Form.Select name="transducer" value={formData.transducer} onChange={handleChange}>
+                  <option value="">Select Transducer</option>
+                  {reoMeters.map((meter) => (
+                    <option key={meter.reoMeterId} value={meter.meterNumber}>{meter.description} - ({meter.meterNumber})</option>
+                  ))}
+                </Form.Select>
               </Form.Group>
             </Col>
           </Row>

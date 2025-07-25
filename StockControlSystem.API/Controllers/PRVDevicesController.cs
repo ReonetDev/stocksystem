@@ -69,6 +69,7 @@ namespace StockControlSystem.API.Controllers
                     Chamber_Material = p.Chamber_Material,
                     Latitude = p.Latitude,
                     Longitude = p.Longitude,
+                    Transducer = p.Transducer,
                     Meter_Size = p.Meter_Size,
                     Meter_Type = p.Meter_Type,
                     Meter_Manufacturer = p.Meter_Manufacturer,
@@ -129,6 +130,7 @@ namespace StockControlSystem.API.Controllers
                     Chamber_Material = p.Chamber_Material,
                     Latitude = p.Latitude,
                     Longitude = p.Longitude,
+                    Transducer = p.Transducer,
                     Meter_Size = p.Meter_Size,
                     Meter_Type = p.Meter_Type,
                     Meter_Manufacturer = p.Meter_Manufacturer,
@@ -190,8 +192,9 @@ namespace StockControlSystem.API.Controllers
                 Lock_working = prvDeviceDto.Lock_working,
                 Sufficient_working_Room = prvDeviceDto.Sufficient_working_Room,
                 Chamber_Material = prvDeviceDto.Chamber_Material,
-                Latitude = prvDeviceDto.Latitude,
-                Longitude = prvDeviceDto.Longitude,
+                Latitude = prvDeviceDto.Latitude ?? 0.0,
+                Longitude = prvDeviceDto.Longitude ?? 0.0,
+                Transducer = prvDeviceDto.Transducer,
                 Meter_Size = prvDeviceDto.Meter_Size,
                 Meter_Type = prvDeviceDto.Meter_Type,
                 Meter_Manufacturer = prvDeviceDto.Meter_Manufacturer,
@@ -260,8 +263,9 @@ namespace StockControlSystem.API.Controllers
             prvDevice.Lock_working = prvDeviceDto.Lock_working;
             prvDevice.Sufficient_working_Room = prvDeviceDto.Sufficient_working_Room;
             prvDevice.Chamber_Material = prvDeviceDto.Chamber_Material;
-            prvDevice.Latitude = prvDeviceDto.Latitude;
-            prvDevice.Longitude = prvDeviceDto.Longitude;
+            prvDevice.Latitude = prvDeviceDto.Latitude ?? 0.0;
+            prvDevice.Longitude = prvDeviceDto.Longitude ?? 0.0;
+            prvDevice.Transducer = prvDeviceDto.Transducer;
             prvDevice.Meter_Size = prvDeviceDto.Meter_Size;
             prvDevice.Meter_Type = prvDeviceDto.Meter_Type;
             prvDevice.Meter_Manufacturer = prvDeviceDto.Meter_Manufacturer;

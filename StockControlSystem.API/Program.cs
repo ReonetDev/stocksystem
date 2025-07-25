@@ -16,6 +16,9 @@ QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 21)), mysqlOptions => mysqlOptions.EnableRetryOnFailure()));
 
+builder.Services.AddDbContext<ExternalDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("REOCONN")));
+
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<DeliveryNotePdfService>();
 builder.Services.AddScoped<AzureBlobService>();

@@ -11,6 +11,7 @@ const UpdatePRV = () => {
     const [loading, setLoading] = useState(false);
     const [siteName, setSiteName] = useState('');
     const [technicians, setTechnicians] = useState([]);
+    const [reoMeters, setReoMeters] = useState([]);
 
     const prvStatuses = ["Open", "Closed"];
     const prvMakes = ["Bermad", "Cla-Val", "Singer", "Dura-Flo", "Braukmann", "JRG", "Clayton", "Honeywell"];
@@ -52,9 +53,23 @@ const UpdatePRV = () => {
             }
         };
 
+        const fetchReoMeters = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:5260/api/ReoMeters', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setReoMeters(response.data.$values);
+            } catch (error) {
+                console.error('Failed to fetch ReoMeters:', error);
+                toast.error('Failed to load ReoMeters for dropdown.');
+            }
+        };
+
         if (id) {
             fetchPRVDevice();
             fetchTechnicians();
+            fetchReoMeters();
         }
     }, [id, navigate]);
 
@@ -416,6 +431,17 @@ const UpdatePRV = () => {
                             <Form.Group controlId="meter_Serial_no">
                                 <Form.Label>Meter Serial No</Form.Label>
                                 <Form.Control name="meter_Serial_no" placeholder="Meter Serial No" value={formData.meter_Serial_no || ''} onChange={handleChange} />
+                            </Form.Group>
+                        </Col>
+                        <Col lg={3} md={6} sm={12}>
+                            <Form.Group controlId="transducer">
+                                <Form.Label>Transducer</Form.Label>
+                                <Form.Select name="transducer" value={formData.transducer || ''} onChange={handleChange}>
+                                    <option value="">Select Transducer</option>
+                                    {reoMeters.map((meter) => (
+                                        <option key={meter.reoMeterId} value={meter.meterNumber}>{meter.meterNumber}</option>
+                                    ))}
+                                </Form.Select>
                             </Form.Group>
                         </Col>
                     </Row>

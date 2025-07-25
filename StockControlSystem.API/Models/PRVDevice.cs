@@ -40,6 +40,7 @@ namespace StockControlSystem.API.Models{
         public string? Chamber_Material { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
+        public string? Transducer { get; set; }
         public int? Meter_Size { get; set; }
         public string? Meter_Type { get; set; }
         public string? Meter_Manufacturer { get; set; }
