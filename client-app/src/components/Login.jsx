@@ -164,7 +164,7 @@ const Login = () => {
                     <div className="mt-5 pb-5 text-center">
                         <Link to="/register" style={{ fontSize: '0.8rem' }}>Register</Link>
                     </div>
-                    <div className="mt-5 text-center" style={{ color: '#b103fcff', fontSize: '0.8rem' }}>
+                    <div className="mt-5 text-center" style={{ color: '#fc03efff', fontSize: '0.8rem' }}>
                         Version: {appVersion}
                     </div>
                     <div className="mt-5 text-center">
