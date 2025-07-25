@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Form, Button, Container, Row, Col, Stack, Spinner } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Stack, Spinner, Alert, ProgressBar} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
 import logo from '../assets/reoicon.png'; // Using reoicon.png as per request
 import { toast } from 'react-toastify';
 
 const Login = () => {
+    
+    //Automatic Update Params
+    const [status, setStatus] = useState('');
+    const [downloadProgress, setDownloadProgress] = useState(0);
+    const [isDownloading, setIsDownloading] = useState(false);
+
+    //Login Params
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -40,6 +47,30 @@ const Login = () => {
                 }
             });
         }
+
+        // Set up IPC listeners for update status
+        const removeStatusListener = window.ipcRenderer.on('update-status', (message) => {
+            setStatus(message);
+            if (message === 'Update available.') {
+                setIsDownloading(true);
+            }
+            if (message.includes('Update downloaded') || message.includes('Error')) {
+                setIsDownloading(false);
+            }
+        });
+
+        const removeProgressListener = window.ipcRenderer.on('download-progress', (progress) => {
+            setDownloadProgress(progress);
+        });
+
+        // Automatically check for updates when component mounts
+        setStatus('Checking for updates...');
+        window.ipcRenderer.send('check-for-updates');
+
+        return () => {
+            removeStatusListener();
+            removeProgressListener();
+        };
     }, []);
 
     const handleSubmit = async (e) => {
@@ -75,6 +106,10 @@ const Login = () => {
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleRestart = () => {
+        window.ipcRenderer.send('restart-app');
     };
 
     return (
@@ -131,6 +166,17 @@ const Login = () => {
                     </div>
                     <div className="mt-5 text-center" style={{ color: '#b103fcff', fontSize: '0.8rem' }}>
                         Version: {appVersion}
+                    </div>
+                    <div className="mt-5 text-center">
+                        {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}
+                    {status && (
+                        <Alert style={{ fontSize: '0.8rem' , background: 'transparent' , border: 'none'}} variant={status.includes('Error') ? 'danger' : 'info'}>
+                            {status}
+                            {status.includes('Restart now?') && (
+                                <Button onClick={handleRestart} variant="primary" size="sm" className="ms-2">Restart</Button>
+                            )}
+                        </Alert>
+                    )}
                     </div>
                 </Col>
             </Row>

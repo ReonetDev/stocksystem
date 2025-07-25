@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Alert, ProgressBar, Row, Col } from 'react-bootstrap';
+import { Container, Button, Alert, ProgressBar} from 'react-bootstrap';
 
 const CheckForUpdate = () => {
     const [status, setStatus] = useState('');
@@ -41,6 +41,7 @@ const CheckForUpdate = () => {
     return (
         <Container fluid className="py-4">
             <h4 className="mb-4 text-center">Check server for updates!</h4>
+            <div className="mt-5 text-center">
                     <Button onClick={handleCheckForUpdate} className="btn-info mb-3">Check</Button>
                     {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}
                     {status && (
@@ -51,6 +52,7 @@ const CheckForUpdate = () => {
                             )}
                         </Alert>
                     )}
+            </div>
 
 
         </Container>
