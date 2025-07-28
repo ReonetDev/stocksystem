@@ -76,7 +76,7 @@ const DeliveryNote = () => {
     }, [id]);
 
     if (loading) {
-        return <Spinner animation="border" />;
+        return <Spinner animation="border" variant="warning"/>;
     }
 
     if (!deliveryNote) {

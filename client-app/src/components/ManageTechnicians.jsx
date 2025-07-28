@@ -129,7 +129,7 @@ const ManageTechnicians = () => {
             </div>
 
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning" />
             ) : (
                 <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                     <thead>
@@ -210,7 +210,7 @@ const ManageTechnicians = () => {
                             />
                         </Form.Group>
                         <Button variant="primary" type="submit" disabled={!isFormValid || loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Save Changes'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Save Changes'}
                         </Button>
                     </Form>
                 </Modal.Body>
@@ -232,7 +232,7 @@ const ManageTechnicians = () => {
                         Cancel
                     </Button>
                     <Button variant="danger" onClick={confirmDelete} disabled={loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Delete'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Delete'}
                     </Button>
                 </Modal.Footer>
             </Modal>

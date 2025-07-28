@@ -78,7 +78,7 @@ const ForcePasswordChange = () => {
                     </Form.Group>
 
                     <Button variant="primary" type="submit" className="w-100" disabled={!isButtonEnabled || loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Change Password'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Change Password'}
                     </Button>
                 </Form>
             </Card>

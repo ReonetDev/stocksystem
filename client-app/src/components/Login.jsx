@@ -157,7 +157,7 @@ const Login = () => {
                             </Form.Group>
 
                             <Button variant="primary" type="submit" disabled={!email || !password || loading} className="w-50">
-                                {loading ? <Spinner animation="border" size="sm" /> : 'Login'}
+                                {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Login'}
                             </Button>
                         </Form>
                     </Stack>

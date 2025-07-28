@@ -80,7 +80,7 @@ const SimsOnHand = () => {
             </div>
 
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning"/>
             ) : (
                 <>
                     <Form.Group className="mb-3">

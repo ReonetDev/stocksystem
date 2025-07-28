@@ -186,7 +186,7 @@ const Consumables = () => {
                 <Col md={6}>
                     {/* Add New Consumable Section */}
                     <div className="mb-4 p-3 border rounded">
-                        <h4>Add New Consumable</h4>
+                        <h4 className="mb-2 text-center">Add New Consumable</h4>
                         <Form onSubmit={handleAddConsumable}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Supplier</Form.Label>
@@ -226,7 +226,7 @@ const Consumables = () => {
                             </Row>
                             <div className="d-flex justify-content-end">
                                 <Button variant="primary" type="submit" disabled={!isAddConsumableFormValid() || loading}>
-                                    {loading ? <Spinner animation="border" size="sm" /> : 'Add Consumable'}
+                                    {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Add Consumable'}
                                 </Button>
                             </div>
                         </Form>
@@ -234,7 +234,7 @@ const Consumables = () => {
 
                     {/* Allocate Consumable Section */}
                     <div className="p-3 border rounded">
-                        <h4>Allocate Consumable</h4>
+                        <h4 className="mb-2 text-center">Allocate Consumable</h4>
                         <Form onSubmit={handleAllocateConsumable}>
                             <Form.Group className="mb-3">
                                 <Form.Label>Consumable Type</Form.Label>
@@ -284,7 +284,7 @@ const Consumables = () => {
                             </Form.Group>
                             <div className="d-flex justify-content-end">
                                 <Button variant="success" type="submit" disabled={!isAllocateConsumableFormValid() || loading}>
-                                    {loading ? <Spinner animation="border" size="sm" /> : 'Allocate'}
+                                    {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Allocate'}
                                 </Button>
                             </div>
                         </Form>
@@ -293,7 +293,7 @@ const Consumables = () => {
 
                 <Col md={6}>
                     {/* Consumables List Table */}
-                    <h3>All Consumables</h3>
+                    <h4 className="mb-2 text-center">All Consumables</h4>
                     <Form.Group className="mb-3">
                         <Form.Control
                             type="text"
@@ -303,7 +303,7 @@ const Consumables = () => {
                         />
                     </Form.Group>
                     {loading ? (
-                        <Spinner animation="border" />
+                        <Spinner animation="border" variant="warning" />
                     ) : (
                         <div style={{ maxHeight: '750px', overflowY: 'auto' }}>
                              <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>

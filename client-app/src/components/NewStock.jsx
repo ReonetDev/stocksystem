@@ -12,7 +12,7 @@ const NewStock = () => {
         description: '',
         make: '',
         model: '',
-        status: '',
+        status: 'In Stock',
         note: '',
         size: '',
         location: '',
@@ -22,18 +22,16 @@ const NewStock = () => {
     const [stockItems, setStockItems] = useState([]); // Array to hold items before bulk submission
     const [loading, setLoading] = useState(false);
     const [suppliers, setSuppliers] = useState([]);
+    const [devices, setDevices] = useState([]);
+    const sourceLocations = ["CPT Office", "JHB Office", "Steven VAN", "Jan VAN", "Joseph VAN", "Kirshwin VAN"];
 
     const addedFormData = {
-        // supplier: '',
+        ...initialFormData,
         serialNumber: '',
-        // description: '',
-        // make: '',
-        // model: '',
-        // status: '',
-        // note: '',
-        // size: '',
-        // location: '',
-        dateTime: new Date().toISOString(), // Add dateTime field
+        description: '',
+        make: '',
+        model: '',
+        size: '',
     };
 
     useEffect(() => {
@@ -49,11 +47,50 @@ const NewStock = () => {
                 toast.error('Failed to load suppliers.', { autoClose: 500 });
             }
         };
+        const fetchDevices = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get('http://localhost:5260/api/devices', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                const devicesData = response.data.$values || response.data.items || response.data.data || response.data;
+                if (Array.isArray(devicesData)) {
+                    setDevices(devicesData);
+                } else {
+                    console.error('Fetched device data is not an array:', devicesData);
+                    setDevices([]);
+                }
+            } catch (error) {
+                console.error('Failed to fetch devices:', error);
+                toast.error('Failed to load devices.', { autoClose: 500 });
+            }
+        };
         fetchSuppliers();
+        fetchDevices();
     }, []);
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+
+        if (name === 'description') {
+            const selectedDevice = devices.find(device => device.description === value);
+            if (selectedDevice) {
+                setFormData(prevData => ({
+                    ...prevData,
+                    make: selectedDevice.make,
+                    model: selectedDevice.model,
+                    size: selectedDevice.size,
+                }));
+            } else {
+                setFormData(prevData => ({
+                    ...prevData,
+                    make: '',
+                    model: '',
+                    size: '',
+                }));
+            }
+        }
     };
 
     const handleAddToArray = (e) => {
@@ -104,7 +141,11 @@ const NewStock = () => {
         setLoading(false);
     };
 
-    const isFormValid = Object.values(formData).every(field => field.trim() !== '');
+    const isFormValid = formData.supplier.trim() !== '' &&
+                        formData.serialNumber.trim() !== '' &&
+                        formData.description.trim() !== '' &&
+                        formData.location.trim() !== '' &&
+                        formData.status.trim() !== '';
     const isAddStockButtonEnabled = stockItems.length > 0;
 
     return (
@@ -134,20 +175,20 @@ const NewStock = () => {
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="description">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control name="description" placeholder="Description" value={formData.description} onChange={handleChange} />
+                            <Form.Select name="description" value={formData.description} onChange={handleChange}>
+                                <option value="">Select Description</option>
+                                {[...new Set(devices.map(device => device.description))].map((description, index) => (
+                                    <option key={index} value={description}>
+                                        {description}
+                                    </option>
+                                ))}
+                            </Form.Select>
                         </Form.Group>
                     </Col>
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="make">
                             <Form.Label>Make</Form.Label>
-                            <Form.Select name="make" value={formData.make} onChange={handleChange}>
-                                <option value="">Select Make</option>
-                                {suppliers.map((supplier) => (
-                                    <option key={supplier.id} value={supplier.description}>
-                                        {supplier.description}
-                                    </option>
-                                ))}
-                            </Form.Select>
+                            <Form.Control name="make" placeholder="Make" value={formData.make} onChange={handleChange} disabled />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -155,19 +196,30 @@ const NewStock = () => {
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="model">
                             <Form.Label>Model</Form.Label>
-                            <Form.Control name="model" placeholder="Model" value={formData.model} onChange={handleChange} />
+                            <Form.Control name="model" placeholder="Model" value={formData.model} onChange={handleChange} disabled />
                         </Form.Group>
                     </Col>
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="location">
                             <Form.Label>Location</Form.Label>
-                            <Form.Control name="location" placeholder="Location" value={formData.location} onChange={handleChange} />
+                            <Form.Control
+                                name="location"
+                                placeholder="Location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                list="location-options"
+                            />
+                            <datalist id="location-options">
+                                {sourceLocations.map((loc, index) => (
+                                    <option key={index} value={loc} />
+                                ))}
+                            </datalist>
                         </Form.Group>
                     </Col>
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="size">
                             <Form.Label>Size</Form.Label>
-                            <Form.Control name="size" placeholder="Size" value={formData.size} onChange={handleChange} />
+                            <Form.Control name="size" placeholder="Size" value={formData.size} onChange={handleChange} disabled />
                         </Form.Group>
                     </Col>
                     <Col lg={2} md={6} sm={12}> {/* Status col-lg-2 */}
@@ -195,7 +247,7 @@ const NewStock = () => {
                 <Row className="mb-3">
                     <Col className="d-flex justify-content-end">
                         <Button variant="secondary" onClick={handleAddToArray} disabled={!isFormValid || loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : '+'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : '+'}
                         </Button>
                     </Col>
                 </Row>
@@ -238,7 +290,7 @@ const NewStock = () => {
             <Row className="mt-3">
                 <Col className="d-flex justify-content-end"> {/* Moved to the right */}
                     <Button variant="primary" onClick={handleSubmit} disabled={!isAddStockButtonEnabled || loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Add Stock'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Add Stock'}
                     </Button>
                 </Col>
             </Row>

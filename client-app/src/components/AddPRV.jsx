@@ -571,7 +571,7 @@ const AddPRV = () => {
                 <Row className="mt-3">
                 <Col className="d-flex justify-content-end">
                     <Button variant="primary" onClick={handleSubmit} disabled={!isFormValid || loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Add PRV'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Add PRV'}
                     </Button>
                 </Col>
             </Row>

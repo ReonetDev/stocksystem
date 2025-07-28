@@ -217,7 +217,7 @@ const AddSim = () => {
                 <Row className="mb-3">
                     <Col className="d-flex justify-content-end">
                         <Button variant="secondary" onClick={handleAddToArray} disabled={!isFormValid || loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : '+'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : '+'}
                         </Button>
                     </Col>
                 </Row>
@@ -267,7 +267,7 @@ const AddSim = () => {
             <Row className="mt-3">
                 <Col className="d-flex justify-content-end">
                     <Button variant="primary" onClick={handleSubmit} disabled={!isAddSimButtonEnabled || loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Add Sim Cards'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Add Sim Cards'}
                     </Button>
                 </Col>
             </Row>

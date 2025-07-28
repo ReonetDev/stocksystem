@@ -291,7 +291,7 @@ const PRVMap = () => {
             </Row>
 
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning" />
             ) : (
                 <>
                     <Row>

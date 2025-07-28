@@ -55,6 +55,8 @@ const StockOnHand = () => {
             ID: item.id,
             Description: item.description,
             'Serial Number': item.serialNumber,
+            Model: item.model,
+            Size: item.size,
             Status: item.status,
             Location: item.location,
             'Date Added': new Date(item.dateTime).toLocaleDateString(),
@@ -114,6 +116,8 @@ const StockOnHand = () => {
                                             <th>ID</th>
                                             <th>Description</th>
                                             <th>Serial Number</th>
+                                            <th>Model</th>
+                                            <th>Size</th>
                                             <th>Status</th>
                                             <th>Location</th>
                                             <th>Date Added</th>
@@ -125,6 +129,8 @@ const StockOnHand = () => {
                                                 <td>{item.id}</td>
                                                 <td>{item.description}</td>
                                                 <td>{item.serialNumber}</td>
+                                                <td>{item.model}</td>
+                                                <td>{item.size}</td>
                                                 <td>{item.status}</td>
                                                 <td>{item.location}</td>
                                                 <td>{new Date(item.dateTime).toLocaleDateString()}</td>

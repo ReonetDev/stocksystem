@@ -80,7 +80,7 @@ const Register = () => {
                                 <Form.Control name="registrationCode" type="password" placeholder="Registration Code" onChange={handleChange} style={{ minWidth: '250px' }} />
                             </Form.Group>
                             <Button variant="primary" type="submit" disabled={!isFormValid || loading} className="w-50">
-                                {loading ? <Spinner animation="border" size="sm" /> : 'Register'}
+                                {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Register'}
                             </Button>
                         </Form>
                     </Stack>

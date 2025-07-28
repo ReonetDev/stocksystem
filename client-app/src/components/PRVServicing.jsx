@@ -421,7 +421,7 @@ const PRVServicing = () => {
                 />
             </Form.Group>
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning" />
             ) : (
                 <div style={{ maxHeight: '300px', overflowY: 'auto' }}>
                     <Table striped bordered hover responsive>

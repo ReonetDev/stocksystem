@@ -108,7 +108,7 @@ const ManageClients = () => {
             </div>
 
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning" />
             ) : (
                 <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>
                     <thead>
@@ -169,7 +169,7 @@ const ManageClients = () => {
                             </Form.Select>
                         </Form.Group>
                         <Button variant="primary" type="submit" disabled={loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Save Changes'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Save Changes'}
                         </Button>
                     </Form>
                 </Modal.Body>

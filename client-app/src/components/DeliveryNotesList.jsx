@@ -34,7 +34,7 @@ const DeliveryNotesList = () => {
     );
 
     if (loading) {
-        return <Spinner animation="border" />;
+        return <Spinner animation="border" variant="warning" />;
     }
 
     return (

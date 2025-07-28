@@ -54,7 +54,7 @@ const PRVList = () => {
                 />
             </Form.Group>
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning"/>
             ) : (
                 <div style={{ maxHeight: '750px', overflowY: 'auto' }}>
                     <Table striped bordered hover responsive className="prv-table-sm" style={{ fontSize: '0.8rem' }}>

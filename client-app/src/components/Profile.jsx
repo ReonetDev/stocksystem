@@ -109,7 +109,7 @@ const Profile = () => {
                 <Col xs={12} md={6} lg={4}>
                     <Stack gap={3} className="align-items-center">
                         <h4>User Profile</h4>
-                        {loading && <Spinner animation="border" />}
+                        {loading && <Spinner animation="border" variant="warning" />}
                         <Form onSubmit={handleProfileSubmit} className="w-100 d-flex flex-column align-items-center">
                             <h4>Update Profile Information</h4>
                             <Form.Group className="mb-3" style={{ width: '100%' }}>
@@ -122,7 +122,7 @@ const Profile = () => {
                                 <Form.Control name="email" type="email" placeholder="Email" value={userData.email} onChange={handleUserChange} style={{ minWidth: '250px' }} disabled />
                             </Form.Group>
                             <Button variant="primary" type="submit" disabled={loading} className="w-50">
-                                {loading ? <Spinner animation="border" size="sm" /> : 'Update Profile'}
+                                {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Update Profile'}
                             </Button>
                         </Form>
 
@@ -151,7 +151,7 @@ const Profile = () => {
                                 )}
                             </Form.Group>
                             <Button variant={isPasswordFormValid ? "success" : "primary"} type="submit" disabled={!isPasswordFormValid || loading} className="w-50">
-                                {loading ? <Spinner animation="border" size="sm" /> : 'Change Password'}
+                                {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Change Password'}
                             </Button>
                         </Form>
                     </Stack>

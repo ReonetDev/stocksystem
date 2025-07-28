@@ -89,7 +89,7 @@ const UpdateStock = () => {
                         </Link>
                     </div>
                     <Stack gap={3}>
-                        {loading && <Spinner animation="border" />}
+                        {loading && <Spinner animation="border" variant="warning"/>}
                         <Form onSubmit={handleSubmit} className="mb-4">
                             <Row className="mb-3">
                                 <Col lg={3} md={6} sm={12}>
@@ -170,7 +170,7 @@ const UpdateStock = () => {
                             <Row className="mt-3">
                                 <Col className="d-flex justify-content-end">
                                     <Button variant="primary" type="submit" disabled={!isFormValid || loading}>
-                                        {loading ? <Spinner animation="border" size="sm" /> : 'Update Stock'}
+                                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Update Stock'}
                                     </Button>
                                 </Col>
                             </Row>

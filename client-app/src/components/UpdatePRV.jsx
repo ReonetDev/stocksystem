@@ -113,7 +113,7 @@ const UpdatePRV = () => {
     if (loading) {
         return (
             <Container className="py-4 text-center">
-                <Spinner animation="border" role="status">
+                <Spinner animation="border" variant="warning" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             </Container>
@@ -462,7 +462,7 @@ const UpdatePRV = () => {
                 <Row>
                     <Col className="d-flex justify-content-end">
                         <Button variant="primary" type="submit" disabled={loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Update PRV'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Update PRV'}
                         </Button>
                     </Col>
                 </Row>

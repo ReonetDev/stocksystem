@@ -167,7 +167,7 @@ const ManageSuppliers = () => {
                     </Col>
                 </Row>
                 <Button variant="primary" type="submit" disabled={loading || !isNewSupplierFormValid()}>
-                    {loading ? <Spinner animation="border" size="sm" /> : 'Add Supplier'}
+                    {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Add Supplier'}
                 </Button>
             </Form>
             </div>
@@ -175,7 +175,7 @@ const ManageSuppliers = () => {
             <h3 className="mb-3 pt-2">Existing Suppliers</h3>
             {loading ? (
                 <div className="text-center">
-                    <Spinner animation="border" role="status">
+                    <Spinner animation="border" variant="warning" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </div>
@@ -262,7 +262,7 @@ const ManageSuppliers = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleUpdateSupplier} disabled={loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Save Changes'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Save Changes'}
                     </Button>
                 </Modal.Footer>
             </Modal>

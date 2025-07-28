@@ -57,7 +57,7 @@ const StockList = () => {
     if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '80vh' }}>
-                <Spinner animation="border" role="status">
+                <Spinner animation="border" variant="warning" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             </div>

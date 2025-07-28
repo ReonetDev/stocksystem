@@ -164,7 +164,7 @@ const AllocateStock = () => {
                     </Col>
                     <Col md={2}>
                         <Button variant="primary" onClick={handleSearch} disabled={isSearchDisabled}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Search'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Search'}
                         </Button>
                     </Col>
                 </Row>
@@ -242,7 +242,7 @@ const AllocateStock = () => {
                     </Col>
                     <Col md={4} className="d-flex align-items-end">
                         <Button variant="secondary" onClick={handleAddToArray} disabled={isAddToArrayDisabled}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Add to List'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Add to List'}
                         </Button>
                     </Col>
                 </Row>
@@ -317,7 +317,7 @@ const AllocateStock = () => {
             <Row className="mt-3">
                 <Col className="d-flex justify-content-end">
                     <Button variant="primary" onClick={handleBulkUpdate} disabled={isBulkUpdateDisabled}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Update Stock'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Update Stock'}
                     </Button>
                 </Col>
             </Row>

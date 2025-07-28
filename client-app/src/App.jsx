@@ -34,6 +34,9 @@ import ManageClients from './components/ManageClients';
 import ManageRegions from './components/ManageRegions';
 import ManageSites from './components/ManageSites';
 import ManageTechnicians from './components/ManageTechnicians';
+import AddDevice from './components/AddDevice';
+import UpdateDevice from './components/UpdateDevice';
+import DeviceList from './components/DeviceList';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -93,6 +96,9 @@ const App = () => {
                     <Route path="/manage-regions" element={<PrivateRoute><NavigationBar /><ManageRegions /></PrivateRoute>} />
                     <Route path="/manage-sites" element={<PrivateRoute><NavigationBar /><ManageSites /></PrivateRoute>} />
                     <Route path="/manage-technicians" element={<PrivateRoute><NavigationBar /><ManageTechnicians /></PrivateRoute>} />
+                    <Route path="/devices" element={<PrivateRoute><NavigationBar /><DeviceList /></PrivateRoute>} />
+                    <Route path="/add-device" element={<PrivateRoute><NavigationBar /><AddDevice /></PrivateRoute>} />
+                    <Route path="/update-device/:id" element={<PrivateRoute><NavigationBar /><UpdateDevice /></PrivateRoute>} />
                 </Routes>
             </Router>
         </div>

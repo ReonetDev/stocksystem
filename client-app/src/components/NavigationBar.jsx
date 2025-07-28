@@ -119,6 +119,7 @@ const NavigationBar = () => {
                             <NavDropdown.Item as={Link} to="/prv-list">Update</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/prv-servicing">Servicing</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/prv-service-records">Service Records</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/manage-technicians">Technicians</NavDropdown.Item>
                             
                         </NavDropdown>
                     )}
@@ -128,8 +129,8 @@ const NavigationBar = () => {
                             <NavDropdown.Item as={Link} to="/manage-clients">Clients</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/manage-regions">Regions</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/manage-sites">Sites</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/manage-technicians">Technicians</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/manage-suppliers">Suppliers</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/devices">Devices</NavDropdown.Item>
                         </NavDropdown>
                     )}
                     {userModules && userModules.system && (

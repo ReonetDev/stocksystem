@@ -26,5 +26,6 @@ namespace StockControlSystem.API.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<BusinessUnit> BusinessUnits { get; set; }
         public DbSet<Module> Modules { get; set; }
+        public DbSet<Device> Devices { get; set; }
     }
 }

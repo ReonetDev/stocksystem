@@ -93,7 +93,7 @@ const PRVServiceRecords = () => {
             </Form.Group>
 
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning"/>
             ) : (
                 selectedPrvDeviceId && (
                     <>

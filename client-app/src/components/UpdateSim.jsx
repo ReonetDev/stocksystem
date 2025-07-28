@@ -103,7 +103,7 @@ const UpdateSim = () => {
     if (loading) {
         return (
             <Container className="py-4 text-center">
-                <Spinner animation="border" role="status">
+                <Spinner animation="border" variant="warning" role="status">
                     <span className="visually-hidden">Loading...</span>
                 </Spinner>
             </Container>
@@ -226,7 +226,7 @@ const UpdateSim = () => {
                 <Row>
                     <Col className="d-flex justify-content-end">
                         <Button variant="primary" type="submit" disabled={!isFormValid || loading}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Update Sim Card'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Update Sim Card'}
                         </Button>
                     </Col>
                 </Row>

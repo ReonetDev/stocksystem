@@ -73,7 +73,7 @@ const SimList = () => {
                 />
             </Form.Group>
             {loading ? (
-                <Spinner animation="border" />
+                <Spinner animation="border" variant="warning" />
             ) : (
                 <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
                     <Table striped bordered hover responsive style={{ fontSize: '0.8rem' }}>

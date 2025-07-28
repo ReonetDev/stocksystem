@@ -117,7 +117,7 @@ const AllocateSim = () => {
                         />
                     </Form.Group>
                     {loading ? (
-                        <Spinner animation="border" />
+                        <Spinner animation="border" variant="warning" />
                     ) : (
                         <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
                             <Table striped bordered hover responsive>
@@ -202,7 +202,7 @@ const AllocateSim = () => {
                                 />
                             </Form.Group>
                             <Button variant="primary" type="submit" disabled={!isFormValid || loading}>
-                                {loading ? <Spinner animation="border" size="sm" /> : 'Allocate Sim'}
+                                {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Allocate Sim'}
                             </Button>
                         </Form>
                     ) : (

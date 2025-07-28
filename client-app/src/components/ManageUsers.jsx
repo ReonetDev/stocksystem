@@ -256,7 +256,7 @@ const ManageUsers = () => {
                 <Row>
                     <Col md={12} className="d-flex justify-content-end align-items-end">
                         <Button variant="primary" type="submit" disabled={loading || !isNewUserFormValid()}>
-                            {loading ? <Spinner animation="border" size="sm" /> : 'Register User'}
+                            {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Register User'}
                         </Button>
                     </Col>
                 </Row>
@@ -265,7 +265,7 @@ const ManageUsers = () => {
             <h3 className="mb-3 pt-3">Existing Users</h3>
             {loading ? (
                 <div className="text-center">
-                    <Spinner animation="border" role="status">
+                    <Spinner animation="border" variant="warning" role="status">
                         <span className="visually-hidden">Loading...</span>
                     </Spinner>
                 </div>
@@ -409,7 +409,7 @@ const ManageUsers = () => {
                         Close
                     </Button>
                     <Button variant="primary" onClick={handleUpdateUser} disabled={loading}>
-                        {loading ? <Spinner animation="border" size="sm" /> : 'Save Changes'}
+                        {loading ? <Spinner animation="border" variant="warning" size="sm" /> : 'Save Changes'}
                     </Button>
                 </Modal.Footer>
             </Modal>
