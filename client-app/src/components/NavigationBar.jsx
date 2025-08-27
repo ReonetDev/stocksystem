@@ -110,6 +110,7 @@ const NavigationBar = () => {
                             <NavDropdown.Item as={Link} to="/sim-list">Update</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/allocate-sim">Allocate</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/sims-on-hand">On Hand</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/mobile-devices">Mobile Devices</NavDropdown.Item>
                         </NavDropdown>
                     )}
                     {userModules && userModules.prv && (

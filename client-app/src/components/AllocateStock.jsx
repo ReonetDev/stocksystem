@@ -17,6 +17,7 @@ const AllocateStock = () => {
     const [foundStock, setFoundStock] = useState(null);
     const [generateDeliveryNote, setGenerateDeliveryNote] = useState(false);
     const [deliveryNoteComments, setDeliveryNoteComments] = useState('');
+    const sourceLocations = ["CPT OFFICE", "JHB OFFICE", "STEVEN VAN", "JAN VAN", "JOSEPH VAN", "KIRSHWIN VAN", "DBN VAN"];
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -218,13 +219,25 @@ const AllocateStock = () => {
                     <Col md={4}>
                         <Form.Group controlId="location">
                             <Form.Label>Location</Form.Label>
-                            <Form.Control
+                            {/* <Form.Control
                                 type="text"
                                 name="location"
                                 value={formData.location}
                                 onChange={handleChange}
                                 placeholder="Enter Location"
+                            /> */}
+                            <Form.Control
+                                name="location"
+                                placeholder="Location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                list="location-options"
                             />
+                            <datalist id="location-options">
+                                {sourceLocations.map((loc, index) => (
+                                    <option key={index} value={loc} />
+                                ))}
+                            </datalist>                            
                         </Form.Group>
                     </Col>
                     <Col md={4}>

@@ -4,7 +4,7 @@
   "description": "Reonet Stock Control System",
   "author": "Reonet (PTY) LTD",
   "private": true,
-  "version": "1.0.6",
+  "version": "1.0.7",
   "copyright": "2025 ©",
   "main": "main.js",
   "type": "commonjs",

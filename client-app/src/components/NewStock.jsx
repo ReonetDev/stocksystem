@@ -23,7 +23,7 @@ const NewStock = () => {
     const [loading, setLoading] = useState(false);
     const [suppliers, setSuppliers] = useState([]);
     const [devices, setDevices] = useState([]);
-    const sourceLocations = ["CPT Office", "JHB Office", "Steven VAN", "Jan VAN", "Joseph VAN", "Kirshwin VAN"];
+    const sourceLocations = ["CPT OFFICE", "JHB OFFICE", "STEVEN VAN", "JAN VAN", "JOSEPH VAN", "KIRSHWIN VAN", "DBN VAN"];
 
     const addedFormData = {
         ...initialFormData,

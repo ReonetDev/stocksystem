@@ -37,6 +37,9 @@ import ManageTechnicians from './components/ManageTechnicians';
 import AddDevice from './components/AddDevice';
 import UpdateDevice from './components/UpdateDevice';
 import DeviceList from './components/DeviceList';
+import MobileDeviceList from './components/MobileDeviceList';
+import AddMobileDevice from './components/AddMobileDevice';
+import UpdateMobileDevice from './components/UpdateMobileDevice';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -99,6 +102,9 @@ const App = () => {
                     <Route path="/devices" element={<PrivateRoute><NavigationBar /><DeviceList /></PrivateRoute>} />
                     <Route path="/add-device" element={<PrivateRoute><NavigationBar /><AddDevice /></PrivateRoute>} />
                     <Route path="/update-device/:id" element={<PrivateRoute><NavigationBar /><UpdateDevice /></PrivateRoute>} />
+                    <Route path="/mobile-devices" element={<PrivateRoute><NavigationBar /><MobileDeviceList /></PrivateRoute>} />
+                    <Route path="/add-mobile-device" element={<PrivateRoute><NavigationBar /><AddMobileDevice /></PrivateRoute>} />
+                    <Route path="/update-mobile-device/:id" element={<PrivateRoute><NavigationBar /><UpdateMobileDevice /></PrivateRoute>} />
                 </Routes>
             </Router>
         </div>
