@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StockControlSystem.API.Data;
 using StockControlSystem.API.Models;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using StockControlSystem.API.Services;
 using StockControlSystem.API.Dtos;
 
@@ -45,7 +42,7 @@ namespace StockControlSystem.API.Controllers
             var deliveryNote = new DeliveryNote
             {
                 DelNoteNumber = $"REODN-{year}-{sequence:D5}",
-                DateTime = deliveryNoteDto.DateTime,
+                DateTime = deliveryNoteDto.DateTime.AddHours(2),
                 Destination = deliveryNoteDto.Destination,
                 Comments = deliveryNoteDto.Comments,
                 Items = new List<DeliveryNoteItem>()

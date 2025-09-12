@@ -25,7 +25,7 @@ const Consumables = () => {
     const [consumableTypes, setConsumableTypes] = useState([]); // To store unique consumable types
     const [filteredDescriptions, setFilteredDescriptions] = useState([]); // To store descriptions based on selected type
 
-    const sourceLocations = ["CPT Office", "JHB Office", "Steven VAN", "Jan VAN", "Joseph VAN", "Kirshwin VAN"];
+    const sourceLocations = ["CPT Office", "JHB Office", "Steven VAN", "Jan VAN", "Joseph VAN", "Kirshwin VAN","DBN VAN"];
     const destinationLocations = [...sourceLocations, "SITE"];
 
     useEffect(() => {
