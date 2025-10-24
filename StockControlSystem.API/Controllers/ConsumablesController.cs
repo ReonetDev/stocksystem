@@ -3,8 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using StockControlSystem.API.Data;
 using StockControlSystem.API.Models;
 using StockControlSystem.API.Dtos;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StockControlSystem.API.Controllers
 {
@@ -30,20 +28,41 @@ namespace StockControlSystem.API.Controllers
         [HttpPost]
         public async Task<ActionResult<Consumable>> PostConsumable(ConsumableDto consumableDto)
         {
-            var consumable = new Consumable
+            try
             {
-                Supplier = consumableDto.Supplier,
-                Type = consumableDto.Type,
-                Description = consumableDto.Description,
-                User = consumableDto.User,
-                Location = consumableDto.Location,
-                Quantity = consumableDto.Quantity
-            };
+                var exisitCons = _context.Consumables.Where(x =>
+                x.Supplier == consumableDto.Supplier && x.Type == consumableDto.Type && x.Description == consumableDto.Description&&
+                x.Location == consumableDto.Location).FirstOrDefault();
+            
+                if(exisitCons != null){
 
-            _context.Consumables.Add(consumable);
-            await _context.SaveChangesAsync();
+                    exisitCons.Quantity += consumableDto.Quantity;
 
-            return CreatedAtAction(nameof(GetConsumables), new { id = consumable.Id }, consumable);
+                    await _context.SaveChangesAsync();
+                    return CreatedAtAction(nameof(GetConsumables), new { id = exisitCons.Id }, exisitCons);
+                }
+                else{
+
+                    var consumable = new Consumable
+                    {
+                        Supplier = consumableDto.Supplier,
+                        Type = consumableDto.Type,
+                        Description = consumableDto.Description,
+                        User = consumableDto.User,
+                        Location = consumableDto.Location,
+                        Quantity = consumableDto.Quantity
+                    };
+
+                    _context.Consumables.Add(consumable);
+                    await _context.SaveChangesAsync();
+                    return CreatedAtAction(nameof(GetConsumables), new { id = consumable.Id }, consumable);
+                }
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message.ToString());
+            }
+            
         }
 
         // PUT: api/Consumables/5

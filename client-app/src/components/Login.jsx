@@ -3,7 +3,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Form, Button, Container, Row, Col, Stack, Spinner, Alert, ProgressBar} from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../axiosConfig';
-import logo from '../assets/reoicon.png'; // Using reoicon.png as per request
+import logo from '../assets/reologo.gif'; // Using reoicon.png as per request
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -117,7 +117,7 @@ const Login = () => {
             <Row className="justify-content-center w-100">
                 <Col xs={12} md={6} lg={4}>
                     <Stack gap={3} className="align-items-center">
-                        <img src={logo} alt="Reonet Logo" style={{ maxWidth: '200px', margin: '0 auto' }} />
+                        <img src={logo} alt="Reonet Logo" style={{ maxWidth: '250px', margin: '0 auto',marginBottom:15 }} />
                         <Form onSubmit={handleSubmit} className="w-100 d-flex flex-column align-items-center">
                             <Form.Group className="mb-3" controlId="formBasicEmail" style={{ width: '100%' }}>
                                 <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} style={{ minWidth: '250px' }} />
@@ -164,13 +164,13 @@ const Login = () => {
                     <div className="mt-5 pb-5 text-center">
                         <Link to="/register" style={{ fontSize: '0.8rem' }}>Register</Link>
                     </div>
-                    <div className="mt-5 text-center" style={{ color: '#fc03efff', fontSize: '0.8rem' }}>
+                    <div className="mt-5 text-center" style={{ color: '#dde638ff', fontSize: '0.8rem', fontWeight:900, fontStyle:'italic' }}>
                         Version: {appVersion}
                     </div>
                     <div className="mt-5 text-center">
                         {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}
                     {status && (
-                        <Alert style={{ fontSize: '0.8rem' , background: 'transparent' , border: 'none'}} variant={status.includes('Error') ? 'danger' : 'info'}>
+                        <Alert style={{ fontSize: '0.8rem' , background: 'transparent' , border: 'none'}} variant={status.includes('Error') ? 'danger' : 'success'}>
                             {status}
                             {status.includes('Restart now?') && (
                                 <Button onClick={handleRestart} variant="primary" size="sm" className="ms-2">Restart</Button>

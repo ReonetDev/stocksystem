@@ -46,16 +46,16 @@ body {
     position: absolute;
 }
 .cube__face--front  {
-    background: rgba(233, 194, 30, 0.2) url(./assets/react.svg) center / 50% no-repeat;
+    background: rgba(233, 165, 30, 0.2) url(./assets/react.svg) center / 50% no-repeat;
     transform: rotateY(  0deg) translateZ(100px); }
 .cube__face--right  {
-    background: rgba(248, 250, 251, 0.2) url(./assets/mysqllogo.png) center / 50% no-repeat;
+    background: rgba(21, 171, 245, 0.2) url(./assets/dd-logo.png) center / 70% no-repeat;
     transform: rotateY( 90deg) translateZ(100px); }
 .cube__face--back   {
-    background: rgba(255, 0, 0, .2) url(./assets/reoicon.png) center / 50% no-repeat;
+    background: rgba(179, 0, 255, 0.2) url(./assets/reoicon.png) center / 70% no-repeat;
     transform: rotateY(180deg) translateZ(100px); }
 .cube__face--left   {
-    background: rgba(33, 150, 243, .2) url(./assets/charplogo.png) center / 50% no-repeat;
+    background: rgba(124, 243, 33, 0.2) url(./assets/charplogo.png) center / 50% no-repeat;
     transform: rotateY(-90deg) translateZ(100px); }
 
 .new-stock-table thead {

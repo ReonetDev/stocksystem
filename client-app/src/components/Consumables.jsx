@@ -65,8 +65,21 @@ const Consumables = () => {
         }
     };
 
+    // const handleAddConsumableChange = (e) => {
+    //     setAddConsumableFormData({ ...addConsumableFormData, [e.target.name]: e.target.value });
+    // };
+
     const handleAddConsumableChange = (e) => {
-        setAddConsumableFormData({ ...addConsumableFormData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setAddConsumableFormData(prevData => {
+            const addConsumableFormData = { ...prevData, [name]: value };
+            if (name === 'type') {
+                const descriptions = [...new Set(consumables.filter(c => c.type === value).map(c => c.description))];
+                setFilteredDescriptions(descriptions);
+                addConsumableFormData.description = ''; // Reset description when type changes
+            }
+            return addConsumableFormData;
+        });
     };
 
     const handleAllocateConsumableChange = (e) => {
@@ -97,7 +110,7 @@ const Consumables = () => {
                 quantity: parseInt(addConsumableFormData.quantity),
                 user: userName, // Set the logged-in user
             };
-
+            
             await axios.post('http://localhost:5260/api/consumables', consumableToAdd, {
                 headers: { Authorization: `Bearer ${token}` },
             });
@@ -199,11 +212,23 @@ const Consumables = () => {
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Type</Form.Label>
-                                <Form.Control type="text" name="type" value={addConsumableFormData.type} onChange={handleAddConsumableChange} placeholder="e.g., Cable, Connector" />
+                                {/* <Form.Control type="text" name="type" value={addConsumableFormData.type} onChange={handleAddConsumableChange} placeholder="e.g., Cable, Connector" /> */}
+                                <Form.Select name="type" value={addConsumableFormData.type} onChange={handleAddConsumableChange}>
+                                    <option value="">Select Type</option>
+                                    {consumableTypes.map(type => (
+                                        <option key={type} value={type}>{type}</option>
+                                    ))}
+                                </Form.Select>
                             </Form.Group>
                             <Form.Group className="mb-3">
                                 <Form.Label>Description</Form.Label>
-                                <Form.Control type="text" name="description" value={addConsumableFormData.description} onChange={handleAddConsumableChange} placeholder="e.g., Cat6 UTP, RJ45" />
+                                {/* <Form.Control type="text" name="description" value={addConsumableFormData.description} onChange={handleAddConsumableChange} placeholder="e.g., Cat6 UTP, RJ45" /> */}
+                                <Form.Select name="description" value={addConsumableFormData.description} onChange={handleAddConsumableChange}>
+                                    <option value="">Select Description</option>
+                                    {filteredDescriptions.map(desc => (
+                                        <option key={desc} value={desc}>{desc}</option>
+                                    ))}
+                                </Form.Select>
                             </Form.Group>
                             <Row className="mb-3">
                                 <Col>

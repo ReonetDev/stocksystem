@@ -82,11 +82,11 @@ const NavigationBar = () => {
     }, []);
 
     return (
-        <Navbar bg={theme} variant={theme} expand="lg" style={{ padding: '5px 20px', borderBottom: '1px solid #38b5e6' }}>
+        <Navbar bg={theme} variant={theme} expand="lg" style={{ padding: '5px 20px', borderBottom: '2px solid #dde638ff' }}>
             <Navbar.Brand as={Link} to="/home">
                 <img
                     src={logo}
-                    height="30"
+                    height="40"
                     className="d-inline-block align-top"
                     alt="Reonet Stock Logo"
                 />
@@ -142,8 +142,8 @@ const NavigationBar = () => {
                     )}
                 </Nav>
                 <Nav> {/* This Nav will contain the profile icon and stay on the right */}
-                    {userName && <Navbar.Text className="me-2">Hello, {userName}</Navbar.Text>} {/* Display user name */}
-                    <NavDropdown title={<FaUserCircle size={25} color='#38b5e6' />} id="profile-nav-dropdown" align="end"> {/* Profile Icon */}
+                    {userName && <Navbar.Text className="me-2">{userName} ({userRole}) </Navbar.Text>} {/* Display user name */}
+                    <NavDropdown title={<FaUserCircle size={25} color='#dde638ff' />} id="profile-nav-dropdown" align="end"> {/* Profile Icon */}
                         <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
                         <NavDropdown.Item onClick={handleLogout} className="text-danger">Log Off</NavDropdown.Item>
                     </NavDropdown>
