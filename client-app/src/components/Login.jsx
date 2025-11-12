@@ -21,6 +21,7 @@ const Login = () => {
     const [rememberMe, setRememberMe] = useState(false);
     const [theme, setTheme] = useState('light'); // Add theme state
     const [appVersion, setAppVersion] = useState('');
+    const [appPlatform, setPlatFrom] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,9 +64,16 @@ const Login = () => {
             setDownloadProgress(progress);
         });
 
-        // Automatically check for updates when component mounts
-        setStatus('Checking for updates...');
-        window.ipcRenderer.send('check-for-updates');
+        // Automatically check for updates when component mounts (skip on macOS)
+        if (window.ipcRenderer) {
+            window.ipcRenderer.invoke('get-platform').then(platform => {
+                if (platform !== 'darwin') {
+                    setStatus('Checking for updates...');
+                    window.ipcRenderer.send('check-for-updates');
+                }
+                setPlatFrom(platform);
+            });
+        }
 
         return () => {
             removeStatusListener();
@@ -98,7 +106,7 @@ const Login = () => {
         } catch (error) {
             console.error('Login failed', error);
             const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.';
-            toast.error(errorMessage , { autoClose: 500 });
+            toast.error(errorMessage , { autoClose: 1000 });
         } finally {
             setLoading(false);
         }
@@ -166,6 +174,8 @@ const Login = () => {
                     </div>
                     <div className="mt-5 text-center" style={{ color: '#dde638ff', fontSize: '0.8rem', fontWeight:900, fontStyle:'italic' }}>
                         Version: {appVersion}
+                        <br></br>
+                        Platform: { appPlatform }
                     </div>
                     <div className="mt-5 text-center">
                         {isDownloading && <ProgressBar now={downloadProgress} label={`${downloadProgress.toFixed(2)}%`} className="mb-3" />}

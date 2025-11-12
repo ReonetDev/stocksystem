@@ -96,21 +96,26 @@ const NavigationBar = () => {
                 <Nav className="me-auto"> {/* Use me-auto to push items to the left */}
                     {userModules && userModules.stock && (
                         <NavDropdown title="Stock" id="basic-nav-dropdown">
+                            <NavDropdown.Header style={{color:'#e67b38ff', textAlign:'center',borderBottom: '2px solid #e67b38ff',fontSize: 18}}>Stock</NavDropdown.Header>
                             <NavDropdown.Item as={Link} to="/new">New</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/stock">Update</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/allocate-stock">Allocate</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/delivery-notes">Delivery Notes</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/consumables">Consumables</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/stock-on-hand">On Hand</NavDropdown.Item>
+                             <NavDropdown.Header style={{color:'#e67b38ff', textAlign:'center',borderBottom: '2px solid #e67b38ff',fontSize: 18}}>Reports & Delivery Notes</NavDropdown.Header>
+                            <NavDropdown.Item as={Link} to="/delivery-notes">Delivery Notes</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/stock-on-hand">Stock Report</NavDropdown.Item>
                         </NavDropdown>
                     )}
                     {userModules && userModules.sim && (
                         <NavDropdown title="Sim's" id="sims-nav-dropdown">
+                            <NavDropdown.Header style={{color:'#e67b38ff', textAlign:'center',borderBottom: '2px solid #e67b38ff',fontSize: 18}}>Sims & Devices</NavDropdown.Header>
                             <NavDropdown.Item as={Link} to="/add-sim">New</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/sim-list">Update</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/allocate-sim">Allocate</NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/sims-on-hand">On Hand</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/mobile-devices">Mobile Devices</NavDropdown.Item>
+                            <NavDropdown.Header style={{color:'#e67b38ff', textAlign:'center',borderBottom: '2px solid #e67b38ff',fontSize: 18}}>Reports & Delivery Notes</NavDropdown.Header>
+                            <NavDropdown.Item as={Link} to="/sims-on-hand">Sims Report</NavDropdown.Item>
+
                         </NavDropdown>
                     )}
                     {userModules && userModules.prv && (

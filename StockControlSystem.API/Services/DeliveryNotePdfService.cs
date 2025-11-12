@@ -2,9 +2,6 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using StockControlSystem.API.Data;
-using StockControlSystem.API.Models;
-using System.IO;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace StockControlSystem.API.Services
@@ -64,6 +61,8 @@ namespace StockControlSystem.API.Services
 
             return Document.Create(container =>
             {
+                DateTime printDate = DateTime.Today;
+
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4);
@@ -76,8 +75,8 @@ namespace StockControlSystem.API.Services
                         {
                             row.RelativeItem().Column(column =>
                             {
-                                column.Item().Text($"Delivery Note: {deliveryNote.DelNoteNumber}").FontSize(16).Bold();
-                                column.Item().Text($"Date: {deliveryNote.DateTime:dd/MM/yyyy HH:mm}");
+                                column.Item().Text($"Delivery Note: {deliveryNote.DelNoteNumber}").FontSize(14).Bold();
+                                column.Item().PaddingTop(5).Text($"Date: {deliveryNote.DateTime:dd/MM/yyyy HH:mm}");
                             });
 
                             row.ConstantItem((float)87.04).Image(Path.Combine(_assetsPath, "reologo.gif")); // 128px * 0.80 = 87.04px
@@ -88,7 +87,7 @@ namespace StockControlSystem.API.Services
                         .Column(column =>
                         {
                             column.Item().Text($"Destination: {deliveryNote.Destination}").FontSize(12);
-                            column.Item().Text($"Comments: {deliveryNote.Comments}");
+                            column.Item().PaddingTop(5).Text($"Comments: {deliveryNote.Comments}");
 
                             column.Item().PaddingTop(1, Unit.Centimetre).Table(table =>
                             {
@@ -112,28 +111,61 @@ namespace StockControlSystem.API.Services
 
                                 foreach (var item in deliveryNote.Items)
                                 {
-                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.SerialNumber ?? "N/A");
-                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Description ?? "N/A");
-                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Make ?? "N/A");
-                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Model ?? "N/A");
-                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Size ?? "N/A");
+                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.SerialNumber ?? "N/A").FontSize(8);
+                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Description ?? "N/A").FontSize(8);
+                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Make ?? "N/A").FontSize(8);
+                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Model ?? "N/A").FontSize(8);
+                                    table.Cell().BorderBottom(1).Padding(5).Text(item.SerialStock?.Size ?? "N/A").FontSize(8);
                                 }
                             });
 
+                            column.Item().PaddingTop(1, Unit.Centimetre).LineHorizontal(2);
+
                             column.Item().PaddingTop(2, Unit.Centimetre).Column(signatureColumn =>
                             {
-                                signatureColumn.Item().Text("Receiver's Signature:").Bold();
-                                signatureColumn.Item().PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
+                                signatureColumn.Item().Text("Received By:").Bold();
+                                signatureColumn.Item().PaddingTop(5).Text("Name:").FontSize(8).Bold();
+                                signatureColumn.Item().MinWidth(100).MaxWidth(200).PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
+                                signatureColumn.Item().Text("Receiver's Signature:").FontSize(8).Bold();
+                                signatureColumn.Item().MinWidth(100).MaxWidth(200).PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
                             });
+
+                            column.Item().PaddingTop(1, Unit.Centimetre).LineHorizontal(2);
+
+                            column.Item().PaddingTop(1, Unit.Centimetre).Row(row =>
+                            {
+                                row.RelativeItem().Column(leftCol =>
+                                {
+                                    leftCol.Item().Text("Booked By:").Bold();
+                                    leftCol.Item().PaddingTop(5).Text("Name:").FontSize(8).Bold();
+                                    leftCol.Item().MinWidth(100).MaxWidth(200).PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
+                                    leftCol.Item().Text("Signature:").FontSize(8).Bold();
+                                    leftCol.Item().MinWidth(100).MaxWidth(200).PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
+                                    leftCol.Item().Text("Date:").FontSize(8).Bold();
+                                    leftCol.Item().Text(printDate.Date.ToShortDateString()).FontSize(8);
+                                });
+
+                                row.RelativeItem().Column(rigthCol =>
+                                {
+                                    rigthCol.Item().Text("Checked By:").Bold();
+                                    rigthCol.Item().PaddingTop(5).Text("Name:").FontSize(8).Bold();
+                                    rigthCol.Item().MinWidth(100).MaxWidth(200).PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
+                                    rigthCol.Item().Text("Signature:").FontSize(8).Bold();
+                                    rigthCol.Item().MinWidth(100).MaxWidth(200).PaddingTop(1, Unit.Centimetre).LineHorizontal(1);
+                                    rigthCol.Item().Text("Date:").FontSize(8).Bold();
+                                    rigthCol.Item().Text(printDate.Date.ToShortDateString()).FontSize(8);
+                                });
+                            });
+                            
                         });
 
                     page.Footer()
-                        .PaddingBottom(1, Unit.Centimetre)
+                        .PaddingBottom(10, Unit.Millimetre)
                         .Row(row =>
                         {
                             row.RelativeItem().AlignRight().Text(x =>
                             {
-                                x.Span("Page ");
+                                x.Span("Pg ");
                                 x.CurrentPageNumber();
                                 x.Span(" of ");
                                 x.TotalPages();

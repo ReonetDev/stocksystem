@@ -357,3 +357,7 @@ ipcMain.on('clear-credentials', () => {
 ipcMain.handle('get-app-version', () => {
     return app.getVersion();
 });
+
+ipcMain.handle('get-platform', () => {
+    return process.platform;
+});
