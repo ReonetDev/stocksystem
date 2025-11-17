@@ -16,6 +16,6 @@ namespace StockControlSystem.API.Models
         public bool System { get; set; }
 
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public User? User { get; set; }
     }
 }

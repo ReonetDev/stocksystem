@@ -6,9 +6,9 @@ namespace StockControlSystem.API.Models{
     public class PRVDevice {
         [Key]
         public int Id { get; set; }
-        public string SupplyDescription { get; set; }
-        public string Technician { get; set; }
-        public string PRV_Status { get; set; }
+        public string? SupplyDescription { get; set; }
+        public string? Technician { get; set; }
+        public string? PRV_Status { get; set; }
         public int? PRV_Size { get; set; }
         public string? PRV_Make { get; set; }
         public double? Upstream_pressure { get; set; }
@@ -49,6 +49,6 @@ namespace StockControlSystem.API.Models{
         public bool? Meter_Functional { get; set; }
         
         [ForeignKey("SiteId")]
-        public Site Site { get; set; }
+        public Site? Site { get; set; }
     }
 }

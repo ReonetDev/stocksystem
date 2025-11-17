@@ -36,7 +36,7 @@ const StockOnHand = () => {
     }, []);
 
     const filteredStockItems = stockItems.filter(item =>
-        item.status === 'In Stock' &&
+        item.status.toLowerCase() === 'in stock' &&
         ((item.type || '').toLowerCase().includes(stockSearchTerm.toLowerCase()) ||
         (item.description || '').toLowerCase().includes(stockSearchTerm.toLowerCase()) ||
         (item.serialNumber || '').toLowerCase().includes(stockSearchTerm.toLowerCase()) ||

@@ -7,14 +7,14 @@ namespace StockControlSystem.API.Models{
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public bool Active { get; set; }
         
         [ForeignKey("ClientId")]
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
         
         [ForeignKey("RegionId")]
-        public Region Region { get; set; }
+        public Region? Region { get; set; }
         
     }
 }

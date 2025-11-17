@@ -6,7 +6,7 @@ namespace StockControlSystem.API.Models{
     public class PRVService{
         [Key]
         public int Id { get; set; }
-        public string SupplyDescription { get; set; }
+        public string? SupplyDescription { get; set; }
         public int? PRV_Size { get; set; }
         public string? PRV_Make { get; set; }
         public DateTime LastServiceDate { get; set; }
@@ -15,9 +15,9 @@ namespace StockControlSystem.API.Models{
         public string? ServiceType { get; set; }
         
         [ForeignKey("SiteId")]
-        public Site Site { get; set; }
+        public Site? Site { get; set; }
         
         [ForeignKey("PRVDeviceId")]
-        public PRVDevice PRVDevice { get; set; }
+        public PRVDevice? PRVDevice { get; set; }
     }
 }
