@@ -95,18 +95,18 @@ const Login = () => {
                 window.ipcRenderer.send('clear-credentials');
             }
 
-            toast.success('Login successful! Redirecting...', { autoClose: 500 });
+            toast.success('Login successful! Redirecting...', { autoClose: 1000 });
             setTimeout(() => {
                 if (response.data.forcePasswordChange) {
                     navigate('/force-password-change');
                 } else {
                     navigate('/home');
                 }
-            }, 500); // Redirect after 1 second to allow toast to be seen
+            }, 1000); // Redirect after 1 second to allow toast to be seen
         } catch (error) {
-            console.error('Login failed', error);
+            console.error('Login failed', error.response.data?.message || 'Login failed. Please check your credentials.');
             const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.';
-            toast.error(errorMessage , { autoClose: 1000 });
+            toast.error(errorMessage , { autoClose: 2000 });
         } finally {
             setLoading(false);
         }
