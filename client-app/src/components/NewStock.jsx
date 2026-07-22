@@ -23,7 +23,9 @@ const NewStock = () => {
     const [loading, setLoading] = useState(false);
     const [suppliers, setSuppliers] = useState([]);
     const [devices, setDevices] = useState([]);
+    const [addingNew, setAddingNew] = useState({ make: false, model: false, size: false });
     const sourceLocations = ["CPT OFFICE", "JHB OFFICE", "STEVEN VAN", "JAN VAN", "JOSEPH VAN", "KIRSHWIN VAN", "DBN VAN"];
+    const ADD_NEW_OPTION = '__add_new__';
 
     const addedFormData = {
         ...initialFormData,
@@ -71,25 +73,107 @@ const NewStock = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
 
+        // Description changed: recompute make, and cascade an auto-pick down
+        // through model/size whenever only one option is available at each level.
         if (name === 'description') {
-            const selectedDevice = devices.find(device => device.description === value);
-            if (selectedDevice) {
-                setFormData(prevData => ({
-                    ...prevData,
-                    make: selectedDevice.make,
-                    model: selectedDevice.model,
-                    size: selectedDevice.size,
-                }));
-            } else {
-                setFormData(prevData => ({
-                    ...prevData,
-                    make: '',
-                    model: '',
-                    size: '',
-                }));
-            }
+            const devicesForDescription = devices.filter(device => device.description === value);
+            const uniqueMakes = [...new Set(devicesForDescription.map(device => device.make))].filter(Boolean);
+            const autoMake = uniqueMakes.length === 1 ? uniqueMakes[0] : '';
+
+            const devicesForMake = devicesForDescription.filter(device => device.make === autoMake);
+            const uniqueModels = [...new Set(devicesForMake.map(device => device.model))].filter(Boolean);
+            const autoModel = uniqueModels.length === 1 ? uniqueModels[0] : '';
+
+            const devicesForModel = devicesForMake.filter(device => device.model === autoModel);
+            const uniqueSizes = [...new Set(devicesForModel.map(device => device.size))].filter(Boolean);
+            const autoSize = uniqueSizes.length === 1 ? uniqueSizes[0] : '';
+
+            setAddingNew({ make: false, model: false, size: false });
+            setFormData(prevData => ({
+                ...prevData,
+                description: value,
+                make: autoMake,
+                model: autoModel,
+                size: autoSize,
+            }));
+            return;
+        }
+
+        // Make changed: cascade an auto-pick through model/size.
+        if (name === 'make') {
+            const devicesForMake = devices.filter(device =>
+                device.description === formData.description && device.make === value
+            );
+            const uniqueModels = [...new Set(devicesForMake.map(device => device.model))].filter(Boolean);
+            const autoModel = uniqueModels.length === 1 ? uniqueModels[0] : '';
+
+            const devicesForModel = devicesForMake.filter(device => device.model === autoModel);
+            const uniqueSizes = [...new Set(devicesForModel.map(device => device.size))].filter(Boolean);
+            const autoSize = uniqueSizes.length === 1 ? uniqueSizes[0] : '';
+
+            setFormData(prevData => ({
+                ...prevData,
+                make: value,
+                model: autoModel,
+                size: autoSize,
+            }));
+            return;
+        }
+
+        // Model changed: cascade an auto-pick through size.
+        if (name === 'model') {
+            const devicesForModel = devices.filter(device =>
+                device.description === formData.description &&
+                device.make === formData.make &&
+                device.model === value
+            );
+            const uniqueSizes = [...new Set(devicesForModel.map(device => device.size))].filter(Boolean);
+            const autoSize = uniqueSizes.length === 1 ? uniqueSizes[0] : '';
+
+            setFormData(prevData => ({
+                ...prevData,
+                model: value,
+                size: autoSize,
+            }));
+            return;
+        }
+
+        setFormData(prevData => ({ ...prevData, [name]: value }));
+    };
+
+    // Wraps handleChange for the make/model/size selects: choosing the
+    // "+ Add new..." option swaps that field over to a free-text input
+    // instead of treating the sentinel as a real value.
+    const handleDropdownChange = (e) => {
+        const { name, value } = e.target;
+        if (value === ADD_NEW_OPTION) {
+            setAddingNew(prev => {
+                if (name === 'make') return { make: true, model: false, size: false };
+                if (name === 'model') return { ...prev, model: true, size: false };
+                return { ...prev, size: true };
+            });
+            handleChange({ target: { name, value: '' } });
+            return;
+        }
+        handleChange(e);
+    };
+
+    const handleNewValueChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prevData => ({ ...prevData, [name]: value }));
+    };
+
+    const handleCancelAddNew = (field) => {
+        if (field === 'make') {
+            setAddingNew({ make: false, model: false, size: false });
+            setFormData(prevData => ({ ...prevData, make: '', model: '', size: '' }));
+        } else if (field === 'model') {
+            setAddingNew(prev => ({ ...prev, model: false, size: false }));
+            setFormData(prevData => ({ ...prevData, model: '', size: '' }));
+        } else {
+            setAddingNew(prev => ({ ...prev, size: false }));
+            setFormData(prevData => ({ ...prevData, size: '' }));
         }
     };
 
@@ -109,6 +193,7 @@ const NewStock = () => {
         setStockItems([...stockItems, { ...formData, dateTime: new Date().toISOString() }]);
         // setFormData(initialFormData); // Clear form after adding
         setFormData(addedFormData); // Clear form after adding
+        setAddingNew({ make: false, model: false, size: false });
         toast.success('Item added to list!', { autoClose: 500 });
     };
 
@@ -140,6 +225,23 @@ const NewStock = () => {
         }
         setLoading(false);
     };
+
+    // Cascading option lists: each level's choices are scoped to what's
+    // already selected above it (description -> make -> model -> size).
+    const devicesForDescription = formData.description
+        ? devices.filter(device => device.description === formData.description)
+        : [];
+    const makeOptions = [...new Set(devicesForDescription.map(device => device.make))].filter(Boolean);
+
+    const devicesForMake = formData.make
+        ? devicesForDescription.filter(device => device.make === formData.make)
+        : [];
+    const modelOptions = [...new Set(devicesForMake.map(device => device.model))].filter(Boolean);
+
+    const devicesForModel = formData.model
+        ? devicesForMake.filter(device => device.model === formData.model)
+        : [];
+    const sizeOptions = [...new Set(devicesForModel.map(device => device.size))].filter(Boolean);
 
     const isFormValid = formData.supplier.trim() !== '' &&
                         formData.serialNumber.trim() !== '' &&
@@ -188,7 +290,30 @@ const NewStock = () => {
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="make">
                             <Form.Label>Make</Form.Label>
-                            <Form.Control name="make" placeholder="Make" value={formData.make} onChange={handleChange} disabled />
+                            {addingNew.make ? (
+                                <Stack direction="horizontal" gap={2}>
+                                    <Form.Control
+                                        name="make"
+                                        placeholder="New Make"
+                                        value={formData.make}
+                                        onChange={handleNewValueChange}
+                                        autoFocus
+                                    />
+                                    <Button variant="outline-secondary" size="sm" onClick={() => handleCancelAddNew('make')}>
+                                        Cancel
+                                    </Button>
+                                </Stack>
+                            ) : (
+                                <Form.Select name="make" value={formData.make} onChange={handleDropdownChange} disabled={!formData.description}>
+                                    <option value="">Select Make</option>
+                                    {makeOptions.map((make, index) => (
+                                        <option key={index} value={make}>
+                                            {make}
+                                        </option>
+                                    ))}
+                                    <option value={ADD_NEW_OPTION}>+ Add new...</option>
+                                </Form.Select>
+                            )}
                         </Form.Group>
                     </Col>
                 </Row>
@@ -196,7 +321,30 @@ const NewStock = () => {
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="model">
                             <Form.Label>Model</Form.Label>
-                            <Form.Control name="model" placeholder="Model" value={formData.model} onChange={handleChange} disabled />
+                            {addingNew.model ? (
+                                <Stack direction="horizontal" gap={2}>
+                                    <Form.Control
+                                        name="model"
+                                        placeholder="New Model"
+                                        value={formData.model}
+                                        onChange={handleNewValueChange}
+                                        autoFocus
+                                    />
+                                    <Button variant="outline-secondary" size="sm" onClick={() => handleCancelAddNew('model')}>
+                                        Cancel
+                                    </Button>
+                                </Stack>
+                            ) : (
+                                <Form.Select name="model" value={formData.model} onChange={handleDropdownChange} disabled={!formData.make}>
+                                    <option value="">Select Model</option>
+                                    {modelOptions.map((model, index) => (
+                                        <option key={index} value={model}>
+                                            {model}
+                                        </option>
+                                    ))}
+                                    <option value={ADD_NEW_OPTION}>+ Add new...</option>
+                                </Form.Select>
+                            )}
                         </Form.Group>
                     </Col>
                     <Col lg={3} md={6} sm={12}>
@@ -219,7 +367,30 @@ const NewStock = () => {
                     <Col lg={3} md={6} sm={12}>
                         <Form.Group controlId="size">
                             <Form.Label>Size</Form.Label>
-                            <Form.Control name="size" placeholder="Size" value={formData.size} onChange={handleChange} disabled />
+                            {addingNew.size ? (
+                                <Stack direction="horizontal" gap={2}>
+                                    <Form.Control
+                                        name="size"
+                                        placeholder="New Size"
+                                        value={formData.size}
+                                        onChange={handleNewValueChange}
+                                        autoFocus
+                                    />
+                                    <Button variant="outline-secondary" size="sm" onClick={() => handleCancelAddNew('size')}>
+                                        Cancel
+                                    </Button>
+                                </Stack>
+                            ) : (
+                                <Form.Select name="size" value={formData.size} onChange={handleDropdownChange} disabled={!formData.model}>
+                                    <option value="">Select Size</option>
+                                    {sizeOptions.map((size, index) => (
+                                        <option key={index} value={size}>
+                                            {size}
+                                        </option>
+                                    ))}
+                                    <option value={ADD_NEW_OPTION}>+ Add new...</option>
+                                </Form.Select>
+                            )}
                         </Form.Group>
                     </Col>
                     <Col lg={2} md={6} sm={12}> {/* Status col-lg-2 */}
