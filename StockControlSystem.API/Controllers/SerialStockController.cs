@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StockControlSystem.API.Data;
 using StockControlSystem.API.Models;
+using StockControlSystem.API.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,10 +15,12 @@ namespace StockControlSystem.API.Controllers
     public class SerialStockController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly StockMovementLogger _movementLogger;
 
-        public SerialStockController(ApplicationDbContext context)
+        public SerialStockController(ApplicationDbContext context, StockMovementLogger movementLogger)
         {
             _context = context;
+            _movementLogger = movementLogger;
         }
 
         [HttpGet]
@@ -63,6 +66,10 @@ namespace StockControlSystem.API.Controllers
             _context.SerialStock.Add(serialStock);
             await _context.SaveChangesAsync();
 
+            await _movementLogger.LogAsync(User, "SerialStock", serialStock.Id, serialStock.SerialNumber, "Created",
+                StockMovementLogger.BuildDiff(("Location", null, serialStock.Location), ("Status", null, serialStock.Status)));
+            await _context.SaveChangesAsync();
+
             return CreatedAtAction("GetSerialStock", new { id = serialStock.Id }, serialStock);
         }
 
@@ -73,6 +80,25 @@ namespace StockControlSystem.API.Controllers
             if (id != serialStock.Id)
             {
                 return BadRequest();
+            }
+
+            var existing = await _context.SerialStock.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            var changes = StockMovementLogger.BuildDiff(
+                ("Location", existing.Location, serialStock.Location),
+                ("Status", existing.Status, serialStock.Status),
+                ("Make", existing.Make, serialStock.Make),
+                ("Model", existing.Model, serialStock.Model),
+                ("Size", existing.Size, serialStock.Size),
+                ("Note", existing.Note, serialStock.Note));
+
+            if (changes != null)
+            {
+                await _movementLogger.LogAsync(User, "SerialStock", id, serialStock.SerialNumber ?? existing.SerialNumber, "Updated", changes);
             }
 
             _context.Entry(serialStock).State = EntityState.Modified;
@@ -107,6 +133,8 @@ namespace StockControlSystem.API.Controllers
             }
 
             _context.SerialStock.Remove(serialStock);
+            await _movementLogger.LogAsync(User, "SerialStock", id, serialStock.SerialNumber, "Deleted",
+                StockMovementLogger.BuildDiff(("Location", serialStock.Location, null), ("Status", serialStock.Status, null)));
             await _context.SaveChangesAsync();
 
             return NoContent();

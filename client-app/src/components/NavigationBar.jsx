@@ -142,6 +142,7 @@ const NavigationBar = () => {
                     {userModules && userModules.system && (
                         <NavDropdown title="System" id="system-nav-dropdown">
                             <NavDropdown.Item as={Link} to="/manage-users">Users</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/stock-movement-logs">Stock Movement Logs</NavDropdown.Item>
                             <NavDropdown.Item as={Link} to="/check-for-update">Check for Update</NavDropdown.Item>
                         </NavDropdown>
                     )}

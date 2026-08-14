@@ -28,5 +28,6 @@ namespace StockControlSystem.API.Data
         public DbSet<Module> Modules { get; set; }
         public DbSet<Device> Devices { get; set; }
         public DbSet<MobileDevice> MobileDevices { get; set; }
+        public DbSet<StockMovementLog> StockMovementLogs { get; set; }
     }
 }

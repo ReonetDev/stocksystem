@@ -40,6 +40,7 @@ import DeviceList from './components/DeviceList';
 import MobileDeviceList from './components/MobileDeviceList';
 import AddMobileDevice from './components/AddMobileDevice';
 import UpdateMobileDevice from './components/UpdateMobileDevice';
+import StockMovementLogs from './components/StockMovementLogs';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -105,6 +106,7 @@ const App = () => {
                     <Route path="/mobile-devices" element={<PrivateRoute><NavigationBar /><MobileDeviceList /></PrivateRoute>} />
                     <Route path="/add-mobile-device" element={<PrivateRoute><NavigationBar /><AddMobileDevice /></PrivateRoute>} />
                     <Route path="/update-mobile-device/:id" element={<PrivateRoute><NavigationBar /><UpdateMobileDevice /></PrivateRoute>} />
+                    <Route path="/stock-movement-logs" element={<PrivateRoute><NavigationBar /><StockMovementLogs /></PrivateRoute>} />
                 </Routes>
             </Router>
         </div>

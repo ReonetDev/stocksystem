@@ -22,6 +22,7 @@ builder.Services.AddDbContext<ExternalDbContext>(options =>
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<DeliveryNotePdfService>();
 builder.Services.AddScoped<AzureBlobService>();
+builder.Services.AddScoped<StockMovementLogger>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

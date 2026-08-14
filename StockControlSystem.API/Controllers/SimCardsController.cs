@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using StockControlSystem.API.Data;
 using StockControlSystem.API.Models;
 using StockControlSystem.API.Dtos;
+using StockControlSystem.API.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +17,12 @@ namespace StockControlSystem.API.Controllers
     public class SimCardsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly StockMovementLogger _movementLogger;
 
-        public SimCardsController(ApplicationDbContext context)
+        public SimCardsController(ApplicationDbContext context, StockMovementLogger movementLogger)
         {
             _context = context;
+            _movementLogger = movementLogger;
         }
 
         // GET: api/SimCards
@@ -60,6 +63,10 @@ namespace StockControlSystem.API.Controllers
             _context.SimCards.Add(simCard);
             await _context.SaveChangesAsync();
 
+            await _movementLogger.LogAsync(User, "SimCard", simCard.Id, simCard.SimNumber, "Created",
+                StockMovementLogger.BuildDiff(("Location", null, simCard.Location), ("Status", null, simCard.Status)));
+            await _context.SaveChangesAsync();
+
             return CreatedAtAction(nameof(GetSimCard), new { id = simCard.Id }, simCard);
         }
 
@@ -71,6 +78,23 @@ namespace StockControlSystem.API.Controllers
             if (id != simCard.Id)
             {
                 return BadRequest();
+            }
+
+            var existing = await _context.SimCards.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
+            if (existing == null)
+            {
+                return NotFound();
+            }
+
+            var changes = StockMovementLogger.BuildDiff(
+                ("Location", existing.Location, simCard.Location),
+                ("Status", existing.Status, simCard.Status),
+                ("Device", existing.Device, simCard.Device),
+                ("Allocated", existing.Allocated, simCard.Allocated));
+
+            if (changes != null)
+            {
+                await _movementLogger.LogAsync(User, "SimCard", id, simCard.SimNumber ?? existing.SimNumber, "Updated", changes);
             }
 
             _context.Entry(simCard).State = EntityState.Modified;
@@ -106,6 +130,8 @@ namespace StockControlSystem.API.Controllers
             }
 
             _context.SimCards.Remove(simCard);
+            await _movementLogger.LogAsync(User, "SimCard", id, simCard.SimNumber, "Deleted",
+                StockMovementLogger.BuildDiff(("Location", simCard.Location, null), ("Status", simCard.Status, null)));
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -123,10 +149,21 @@ namespace StockControlSystem.API.Controllers
                 return NotFound($"Sim Card with ID {allocateDto.SimCardId} not found.");
             }
 
+            var changes = StockMovementLogger.BuildDiff(
+                ("Allocated", simCard.Allocated, allocateDto.Allocated),
+                ("Location", simCard.Location, allocateDto.Location),
+                ("Device", simCard.Device, allocateDto.Device),
+                ("Status", simCard.Status, allocateDto.Status));
+
             simCard.Allocated = allocateDto.Allocated;
             simCard.Location = allocateDto.Location;
             simCard.Device = allocateDto.Device;
             simCard.Status = allocateDto.Status;
+
+            if (changes != null)
+            {
+                await _movementLogger.LogAsync(User, "SimCard", simCard.Id, simCard.SimNumber, "Allocated", changes);
+            }
 
             await _context.SaveChangesAsync();
 

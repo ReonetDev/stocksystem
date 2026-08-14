@@ -642,6 +642,45 @@ namespace StockControlSystem.API.Migrations
                     b.ToTable("Sites");
                 });
 
+            modelBuilder.Entity("StockControlSystem.API.Models.StockMovementLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Changes")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ItemIdentifier")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StockMovementLogs");
+                });
+
             modelBuilder.Entity("StockControlSystem.API.Models.Technician", b =>
                 {
                     b.Property<int>("Id")
