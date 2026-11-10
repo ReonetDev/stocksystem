@@ -70,9 +70,9 @@ const NavigationBar = () => {
                 headers: { Authorization: `Bearer ${token}` },
             });
         } catch (error) {
+            // A 401 is handled by the axios interceptor (clears the session and returns to login).
+            // Other errors (e.g. API briefly unreachable) should not log the user out.
             console.error('Token validation failed', error);
-            toast.error('Your session has expired. Please log in again.', { autoClose: 500 });
-            handleLogout();
         }
     };
 

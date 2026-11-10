@@ -185,19 +185,55 @@ function createWindow() {
         },
     });
 
-    // In development, load from the Vite dev server
-    if (process.env.NODE_ENV === 'development') {
-        win.loadURL('http://localhost:5173');
-        win.webContents.openDevTools(); // Disabled by user request
-    } else {
-        // In production, load the built React app
-        win.loadURL(url.format({
+    const isDev = process.env.NODE_ENV === 'development';
+    // In development, load from the Vite dev server; in production, load the built React app
+    const appUrl = isDev
+        ? 'http://localhost:5173'
+        : url.format({
             pathname: path.join(app.getAppPath(), 'dist', 'index.html'),
             protocol: 'file:',
             slashes: true
-        }));
-        // win.webContents.openDevTools(); // Open DevTools for debugging
+        });
+
+    win.loadURL(appUrl);
+    if (isDev) {
+        win.webContents.openDevTools();
     }
+
+    // --- White-screen safety net ---
+    // If the window ever lands on a page that fails to load (e.g. a bad file:// navigation) or the
+    // renderer crashes, reload the app (back to the login screen) instead of leaving a blank window.
+    // Recovery attempts are capped so a genuinely broken build cannot reload in a loop.
+    const MAX_RECOVERY_ATTEMPTS = 3;
+    let recoveryAttempts = 0;
+
+    const recoverWindow = (reason) => {
+        if (!win || win.isDestroyed()) return;
+        if (recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
+            logToMainFile(`Window recovery skipped (limit of ${MAX_RECOVERY_ATTEMPTS} reached): ${reason}`);
+            return;
+        }
+        recoveryAttempts++;
+        logToMainFile(`Recovering window (attempt ${recoveryAttempts}): ${reason}`);
+        win.loadURL(appUrl);
+    };
+
+    win.webContents.on('did-fail-load', (event, errorCode, errorDescription, validatedURL, isMainFrame) => {
+        // -3 (ERR_ABORTED) fires when one navigation is superseded by another; it is not a failure.
+        if (!isMainFrame || errorCode === -3) return;
+        recoverWindow(`did-fail-load ${errorCode} ${errorDescription} - URL: ${validatedURL}`);
+    });
+
+    win.webContents.on('render-process-gone', (event, details) => {
+        recoverWindow(`render-process-gone: ${details.reason} (exit code ${details.exitCode})`);
+    });
+
+    // Reset the counter once the app has loaded successfully.
+    win.webContents.on('did-finish-load', () => {
+        if (win.webContents.getURL().startsWith(appUrl)) {
+            recoveryAttempts = 0;
+        }
+    });
 
     // Send theme to renderer
     win.webContents.on('did-finish-load', () => {

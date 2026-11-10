@@ -104,8 +104,10 @@ const Login = () => {
                 }
             }, 1000); // Redirect after 1 second to allow toast to be seen
         } catch (error) {
-            console.error('Login failed', error.response.data?.message || 'Login failed. Please check your credentials.');
-            const errorMessage = error.response?.data?.message || 'Login failed. Please check your credentials.';
+            const errorMessage = !error.response
+                ? 'Unable to reach the server. Please try again in a moment.'
+                : error.response.data?.message || 'Login failed. Please check your credentials.';
+            console.error('Login failed', errorMessage);
             toast.error(errorMessage , { autoClose: 2000 });
         } finally {
             setLoading(false);

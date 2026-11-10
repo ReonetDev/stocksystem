@@ -99,7 +99,7 @@ namespace StockControlSystem.API.Controllers
             return Ok(new { Token = token, Role = user.Role, ForcePasswordChange = forcePasswordChange });
         }
 
-        // [Authorize]
+        [Authorize]
         [HttpGet("validate-token")]
         public IActionResult ValidateToken()
         {
