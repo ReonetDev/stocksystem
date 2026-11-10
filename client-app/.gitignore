@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Local packaging output (API publish copied in for electron-builder, packaged installers)
+/api/
+/release/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
