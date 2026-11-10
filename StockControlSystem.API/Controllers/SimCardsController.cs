@@ -90,7 +90,8 @@ namespace StockControlSystem.API.Controllers
                 ("Location", existing.Location, simCard.Location),
                 ("Status", existing.Status, simCard.Status),
                 ("Device", existing.Device, simCard.Device),
-                ("Allocated", existing.Allocated, simCard.Allocated));
+                ("Allocated", existing.Allocated, simCard.Allocated),
+                ("Comment", existing.Comment, simCard.Comment));
 
             if (changes != null)
             {

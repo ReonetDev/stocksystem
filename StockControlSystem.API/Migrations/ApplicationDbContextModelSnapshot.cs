@@ -561,6 +561,9 @@ namespace StockControlSystem.API.Migrations
                     b.Property<bool>("Allocated")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("Comment")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Device")
                         .IsRequired()
                         .HasColumnType("longtext");

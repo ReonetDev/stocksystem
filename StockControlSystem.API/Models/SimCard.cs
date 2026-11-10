@@ -20,5 +20,6 @@ namespace StockControlSystem.API.Models
         public string? Location { get; set; }
         public string? Device { get; set; }
         public string? Status { get; set; }
+        public string? Comment { get; set; }
     }
 }

@@ -40,7 +40,8 @@ const SimsOnHand = () => {
         (sim.period || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
         (sim.location || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
         (sim.device || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (sim.status || '').toLowerCase().includes(searchTerm.toLowerCase())
+        (sim.status || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (sim.comment || '').toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const exportToExcel = () => {
@@ -59,6 +60,7 @@ const SimsOnHand = () => {
             Location: sim.location,
             Device: sim.device,
             Status: sim.status,
+            Comment: sim.comment || '',
         }));
 
         const wb = XLSX.utils.book_new();
@@ -109,6 +111,7 @@ const SimsOnHand = () => {
                                     <th>Location</th>
                                     <th>Device</th>
                                     <th>Status</th>
+                                    <th>Comment</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,6 +131,7 @@ const SimsOnHand = () => {
                                         <td>{sim.location}</td>
                                         <td>{sim.device}</td>
                                         <td>{sim.status}</td>
+                                        <td style={{ whiteSpace: 'pre-wrap', minWidth: '200px' }}>{sim.comment}</td>
                                     </tr>
                                 ))}
                             </tbody>

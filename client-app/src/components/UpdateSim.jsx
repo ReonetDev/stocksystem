@@ -21,6 +21,7 @@ const UpdateSim = () => {
         location: '',
         device: '',
         status: '',
+        comment: '',
     });
     const [loading, setLoading] = useState(false);
 
@@ -43,6 +44,7 @@ const UpdateSim = () => {
                     ...simData,
                     startDate: simData.startDate.split('T')[0], // Format for date input
                     endDate: simData.endDate.split('T')[0],     // Format for date input
+                    comment: simData.comment ?? '',
                 });
             } catch (error) {
                 console.error('Failed to fetch sim card:', error);
@@ -95,9 +97,11 @@ const UpdateSim = () => {
         }
     };
 
-    const isFormValid = Object.values(formData).every(field => {
+    const optionalFields = ['comment'];
+    const isFormValid = Object.entries(formData).every(([name, field]) => {
+        if (optionalFields.includes(name)) return true;
         if (typeof field === 'boolean') return true; // For 'allocated'
-        return field.toString().trim() !== '';
+        return field != null && field.toString().trim() !== '';
     });
 
     if (loading) {
@@ -218,6 +222,21 @@ const UpdateSim = () => {
                                 name="allocated"
                                 label="Allocated"
                                 checked={formData.allocated}
+                                onChange={handleChange}
+                            />
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row className="mb-3">
+                    <Col>
+                        <Form.Group controlId="comment">
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control
+                                as="textarea"
+                                rows={3}
+                                name="comment"
+                                placeholder="Add a note about this sim card (optional)"
+                                value={formData.comment}
                                 onChange={handleChange}
                             />
                         </Form.Group>
